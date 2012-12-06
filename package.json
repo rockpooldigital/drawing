@@ -1,0 +1,15 @@
+{
+  "name": "drawing",
+  "description": "drawing",
+  "version" :"0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "connect": "",
+    "ejs": "",
+    "socket.io": ""
+  },
+  "scripts": {
+    "start": "server.js"
+  }
+}
