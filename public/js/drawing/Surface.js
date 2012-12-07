@@ -18,7 +18,6 @@ window.RockDrawing.CreateSurface = function(container) {
 
 
 	var bounds = container.getBoundingClientRect();
-	console.log(bounds);
 
 		//canvas
 	_backCanvas = document.createElement("canvas");
@@ -39,9 +38,7 @@ window.RockDrawing.CreateSurface = function(container) {
 	var ctx = _canvas.getContext('2d'); 
 
 	function pushPoints(start) {
-		//console.log("pushing", start);
 		var set = points.slice(start);
-		console.log(points.length);
 		var command = {
 			tool : _tool,
 			toolSize : _toolSize,
@@ -113,9 +110,9 @@ window.RockDrawing.CreateSurface = function(container) {
 		_colour = col;
 	}
 	surface.frontCanvas = _canvas;
-	/*surface.adjustSizeAndRedraw = function(){ 
-		canvasHelper.redrawCanvas(_backCanvas);
-		canvasHelper.redrawCanvas(_canvas);
-	}*/
+	surface.adjustSizeAndRedraw = function(){ 
+		_front.redraw();
+		_backing.redraw();
+	};
 	return surface;
 }

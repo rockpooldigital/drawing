@@ -29,7 +29,7 @@ window.RockDrawing.Canvas = function(canvas) {
 		}
 	}
 
-	function redrawCanvas(canvas) {
+	function redrawCanvas() {
 		var buffer = document.createElement('canvas');
 		var bounds = canvas.getBoundingClientRect();
 		buffer.width =  bounds.width;
@@ -96,6 +96,7 @@ window.RockDrawing.Canvas = function(canvas) {
 		clear :function() {
 			_context.clearRect(0, 0, canvas.width, canvas.height);
 		},
-		drawLine: drawLine
+		drawLine: drawLine,
+		redraw : redrawCanvas
 	}
 }
