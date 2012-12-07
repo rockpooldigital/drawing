@@ -2,93 +2,22 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="/js/drawing-editor.js"></script>
+		<script src="/js/Canvas.js"></script>
+		<script src="/js/drawing/Surface.js"></script>
+		<script src="/js/drawing/Editor.js"></script>
+		
+		<link href="/js/drawing/drawing.css" rel="stylesheet" type="text/css" >
+
 		<style>
 			#canvas {
-				/*border:1px solid black;*/
-				/*height:100%;
-				width:100%;*/
 				margin: 0;
 				border:0;
-
-
-					  position: absolute;
-					  top: 0px;
-					  bottom: 0px;
-					  left:0px;
-					  right:0px;
-	
-
+			  position: absolute;
+			  top: 0px;
+			  bottom: 0px;
+			  left:0px;
+			  right:0px;
 			}
-
-			.touch-drawing {
-				height:100%;
-				width: 100%;
-			}
-
-			.touch-drawing .controls {
-				background-color: #dfdfdf;
-				height: 20px;
-			}
-
-			.touch-drawing .controls ul {
-				list-style: none;
-				margin:0 ; 
-				padding :0;
-				height:100%;
-				float: left;
-			}
-			.touch-drawing .controls ul li {
-				width: 30px; height: 20px;
-				float:left;
-				display:block;
-			}
-
-			.touch-drawing .controls.upper ul li.selected {
-				border-bottom: 5px solid #FFFFFF;
-				height: 15px;
-			}
-
-			.touch-drawing .controls.lower ul li.selected {
-				border-top: 5px solid #FFFFFF;
-				height: 15px;
-			}
-
-			.touch-drawing .controls.lower {
-				border-top : 1px solid #A6A6A6;
-			}
-			.touch-drawing .controls ul li a {
-				display:block;
-				width: 100%;
-				height: 100%;
-			}
-
-			.touch-drawing canvas {
-				width: 100%;
-				height: 100%;
-			}
-
-			.touch-drawing canvas {
-				position: absolute;
-				left:0;
-				top: 0;
-			}
-
-			.touch-drawing canvas .front {
-				z-index: 1;
-			}
-
-			.touch-drawing div.drawing {
-				position: relative;
-			}
-/*
-			html, body {
-  			height: 100%;
-  			margin: 0;
-  			padding:0;
-			}*/
-
-
 
 		</style>
 	</head>
@@ -102,9 +31,13 @@
 
 		<script>
 
-		drawingEditor.init(
+		var editor = RockDrawing.Editor(
 			document.getElementById('canvas')
 		);
+
+		editor.surface.onDataReady= function(data) {
+			console.log(data);
+		}
 
 		</script>
 
