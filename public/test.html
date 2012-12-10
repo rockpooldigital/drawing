@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="/js/Canvas.js"></script>
+
 		<script src="/js/drawing/Surface.js"></script>
 		<script src="/js/drawing/Editor.js"></script>
-		
+		    <script src="/socket.io/socket.io.js"></script>
 		<link href="/js/drawing/drawing.css" rel="stylesheet" type="text/css" >
 
 		<style>
@@ -35,9 +35,28 @@
 			document.getElementById('canvas')
 		);
 
-		editor.surface.onDataReady= function(data) {
+		var socket = io.connect();
+
+		editor.surface.onCommand= function(data) {
 			console.log(data);
+			socket.emit('draw', data);
 		}
+
+		var buffer = [];
+		var processNext;
+		processNext = function() {
+			if (buffer.length > 0) {
+				editor.surface.pushCommandWithAnimation(buffer.shift(), processNext);
+			} else {
+				setTimeout(processNext, 300);
+			}
+		}
+
+		processNext();
+
+		socket.on('draw', function(data) {
+			buffer.push(data);
+		});
 
 		</script>
 

@@ -7,6 +7,8 @@ RockDrawing.Editor = function(element) {
 
 	var _drawingOffset, _surface;
 
+	var _colour, _tool, _toolSize;
+
 	//create div inside
 	var container = document.createElement("div");
 	container.classList.add("touch-drawing");
@@ -24,8 +26,6 @@ RockDrawing.Editor = function(element) {
 	drawing.style.height=(container.offsetHeight-40) + "px";
 	drawing.classList.add('drawing');
 
-
-//return
 	//drawing controls (lower)
 	var controlsLower = document.createElement('div');
 	controlsLower.classList.add("controls");
@@ -115,16 +115,20 @@ RockDrawing.Editor = function(element) {
 	}
 
 	setupColours(controlsLower, function(newColour) {
-		_surface.setColour(newColour);
+		//_surface.setColour(newColour);
+		_colour = newColour;
 	});
 
 	setupTools(controls, function(newTool, newToolSize) {
-		_surface.setTool(newTool, newToolSize);
+		//_surface.setTool(newTool, newToolSize);
+		_tool = newTool; _toolSize= newToolSize;
 	});
 
 	_drawingOffset = drawing.getBoundingClientRect();
 	_surface= RockDrawing.CreateSurface(drawing);
-
+	
+	_toolSize = 4;
+	_colour = "#000";	
 
 	function resizeCanvases() {
 		_surface.adjustSizeAndRedraw();
@@ -150,15 +154,15 @@ RockDrawing.Editor = function(element) {
 	var canvas = _surface.frontCanvas;
 
 	if ("ontouchstart" in window) {
-		canvas.ontouchstart= touchEvent(_surface.penDown, true);
+		canvas.ontouchstart= touchEvent(function(x,y) { _surface.penDown(_toolSize,_colour,x,y); }, true);
 		canvas.ontouchmove = touchEvent(_surface.penMove, true);
 		canvas.ontouchend = _surface.penUp;
 	} else {
 		canvas.onmousedown = function(e) { 
 			if (typeof(e.offsetX) === 'undefined') {
-				_surface.penDown(e.layerX, e.layerY); 
+				_surface.penDown(_toolSize, _colour, e.layerX, e.layerY); 
 			} else {
-				_surface.penDown(e.offsetX, e.offsetY); 
+				_surface.penDown(_toolSize, _colour, e.offsetX, e.offsetY); 
 			}
 		};
 

@@ -1,4 +1,4 @@
-if (typeof(window.RockDrawing) === "undefined")	window.RockDrawing = {};
+
 
 window.RockDrawing.Canvas = function(canvas) {
 	var  _backCanvas = canvas;
