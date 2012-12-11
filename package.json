@@ -7,7 +7,8 @@
     "express": "3.x",
     "connect": "",
     "ejs": "",
-    "socket.io": ""
+    "socket.io": "",
+    "mongodb":""
   },
   "scripts": {
     "start": "server.js"

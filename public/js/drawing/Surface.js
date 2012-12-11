@@ -45,6 +45,7 @@ window.RockDrawing.CreateSurface = function(container) {
 				if (path.onCommand) {
 					var now= new Date().getTime();
 					var command = {
+						command: 'path',
 					//	tool : _tool,
 						toolSize : toolSize,
 						path : set,
@@ -175,34 +176,39 @@ window.RockDrawing.CreateSurface = function(container) {
 	}
 
 	function redrawCommand(command, done) {
-		var set = command.path, w = command.toolSize, c = command.colour;
+		if (command.command === 'path') {
+			var set = command.path, w = command.toolSize, c = command.colour;
 
-		var context = 	_backCanvas.getContext('2d');
+			var context = 	_backCanvas.getContext('2d');
 
-		if (set.length === 1) {
-			placePoint(context, set[0][0], set[0][1], w, c);
+			if (set.length === 1) {
+				placePoint(context, set[0][0], set[0][1], w, c);
+				if (done) { setTimeout(done,0); }
+			} else {
+				var p = path(w, c);
+				p.begin(set[0][0], set[0][1]);
+				var f = function(i) {
+					if(i >= set.length) {
+						p.end();
+						if (done) done();
+					} else {
+						p.moveTo(set[i][0], set[i][1]);
+						setTimeout(function() {
+							f(i+1);	
+						}, interval);
+					}
+				};
+
+				var interval = Math.floor((0.0 + command.timeTaken) / set.length);
+
+				setTimeout(function() {
+					f(1);	
+				}, interval);
+				
+			}
+		} else if (command.command === 'clear') {
+			clear(_backCanvas, _backCanvas.getContext('2d'));
 			if (done) { setTimeout(done,0); }
-		} else {
-			var p = path(w, c);
-			p.begin(set[0][0], set[0][1]);
-			var f = function(i) {
-				if(i >= set.length) {
-					p.end();
-					if (done) done();
-				} else {
-					p.moveTo(set[i][0], set[i][1]);
-					setTimeout(function() {
-						f(i+1);	
-					}, interval);
-				}
-			};
-
-			var interval = Math.floor((0.0 + command.timeTaken) / set.length);
-
-			setTimeout(function() {
-				f(1);	
-			}, interval);
-			
 		}
 	}
 
@@ -261,6 +267,15 @@ window.RockDrawing.CreateSurface = function(container) {
 		redrawCanvas(_canvas);
 		redrawCanvas(_backCanvas);
 	};
+	surface.clear = function() {
+		clear(_canvas, ctx);
+		clear(_backCanvas, _backCanvas.getContext('2d'));
+		if (surface.onCommand) {
+			surface.onCommand({
+				command: 'clear'
+			});
+		}
+	}
 
 	surface.redrawCommand = redrawCommand;
 	return surface;

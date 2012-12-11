@@ -122,6 +122,20 @@ RockDrawing.Editor = function(element) {
 		_tool = newTool; _toolSize= newToolSize;
 	});
 
+	//erase button
+	var tools = document.createElement('ul');
+	tools.classList.add('tools');
+	var clearBtn = document.createElement('a');
+	clearBtn.href='#';
+	clearBtn.textContent= 'clear';
+	var clearLi =  document.createElement('li');
+	clearLi.appendChild(clearBtn);
+	tools.appendChild(clearLi);
+	controls.appendChild(tools);
+	clearBtn.onclick = function() {
+		_surface.clear();
+	}
+
 	_drawingOffset = drawing.getBoundingClientRect();
 	_surface= RockDrawing.CreateSurface(drawing);
 	

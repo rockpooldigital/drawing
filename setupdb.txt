@@ -1,0 +1,29 @@
+use drawing;
+
+db.categories.save({
+	name: 'Place',
+	words : [
+		'London', 'Bristol', 'Austria', 'Scotland', 'Wales', 'Birmingham', 'Egypt'
+	]
+});
+
+db.categories.save({
+	name: 'Person',
+	words : [
+		'Bruce', 'Tom P','Gordon Brown', 'The Queen'
+	]
+});
+
+db.categories.save({
+	name: 'Food & Drink',
+	words : [
+		'Cheese', 'Steak', 'Chips', 'Burger', 'Hot Dog', 'Pie', 'Spaghetti', 'Sandwich','Cake','Wine','Beer', 'Cider'
+	]
+});
+
+db.categories.save({
+	name: 'Animal',
+	words : [
+		'Elephant','Monkey','Mouse','Rat', 'Fish','Horse', 'Unicorn'
+	]
+});
