@@ -137,8 +137,16 @@ RockDrawing.Editor = function(element) {
 
   var orientationEvent = ("onorientationchange" in window) ? "orientationchange" : "resize";
 
+  var delay = (function () {
+	  var timer = 0;
+	  return function (callback, ms) {
+	    clearTimeout(timer);
+	    timer = setTimeout(callback, ms);
+	  };
+	})();
+	
 	window.addEventListener(orientationEvent, function() {
-		resizeCanvases();
+		delay(resizeCanvases, 200);
 	}, false);
 
 

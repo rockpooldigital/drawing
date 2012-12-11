@@ -38,24 +38,31 @@
 		var socket = io.connect();
 
 		editor.surface.onCommand= function(data) {
-			console.log(data);
+			//console.log(data);
 			socket.emit('draw', data);
 		}
 
 		var buffer = [];
 		var processNext;
+		var isDrawing = false;
+
 		processNext = function() {
 			if (buffer.length > 0) {
-				editor.surface.pushCommandWithAnimation(buffer.shift(), processNext);
+				isDrawing = true;
+				//console.log("executing command");
+				editor.surface.redrawCommand(buffer.shift(), processNext);
 			} else {
-				setTimeout(processNext, 300);
+				isDrawing = false;
 			}
 		}
 
-		processNext();
-
 		socket.on('draw', function(data) {
+			//console.log("received command");
 			buffer.push(data);
+
+			if (!isDrawing) {
+				processNext();
+			}
 		});
 
 		</script>

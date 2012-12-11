@@ -1,7 +1,7 @@
 if (typeof(window.RockDrawing) === "undefined")	window.RockDrawing = {};
 window.RockDrawing.TOOL_PEN = 1;
 window.RockDrawing.CreateSurface = function(container) {
-	var BUFFER_SIZE=  20;
+	var BUFFER_SIZE=  40;
 
 	var surface = {
 		TOOL_PEN : 1,
@@ -14,7 +14,7 @@ window.RockDrawing.CreateSurface = function(container) {
 	 		_path;
 
 		function outputCommand(c) {
-			console.log(c);
+			//console.log(c);
 			if (surface.onCommand) {
 				surface.onCommand(c);
 			}
@@ -174,13 +174,14 @@ window.RockDrawing.CreateSurface = function(container) {
 			context.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
-	function pushCommandWithAnimation(command, done) {
+	function redrawCommand(command, done) {
 		var set = command.path, w = command.toolSize, c = command.colour;
 
 		var context = 	_backCanvas.getContext('2d');
 
 		if (set.length === 1) {
 			placePoint(context, set[0][0], set[0][1], w, c);
+			if (done) done();
 		} else {
 			var p = path(w, c);
 			p.begin(set[0][0], set[0][1]);
@@ -246,10 +247,10 @@ window.RockDrawing.CreateSurface = function(container) {
 	surface.penUp = endDraw;
 	surface.frontCanvas = _canvas;
 	surface.adjustSizeAndRedraw = function(){ 
-		redraw(_canvas);
-		redraw(_backCanvas);
+		redrawCanvas(_canvas);
+		redrawCanvas(_backCanvas);
 	};
 
-	surface.pushCommandWithAnimation = pushCommandWithAnimation;
+	surface.redrawCommand = redrawCommand;
 	return surface;
 }
