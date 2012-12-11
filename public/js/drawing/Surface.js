@@ -181,7 +181,7 @@ window.RockDrawing.CreateSurface = function(container) {
 
 		if (set.length === 1) {
 			placePoint(context, set[0][0], set[0][1], w, c);
-			if (done) done();
+			if (done) { setTimeout(done,0); }
 		} else {
 			var p = path(w, c);
 			p.begin(set[0][0], set[0][1]);
@@ -212,14 +212,25 @@ window.RockDrawing.CreateSurface = function(container) {
 	container.appendChild(_backCanvas);
 	_backCanvas.width  = bounds.width;
 	_backCanvas.height = bounds.height;
-	
+	_backCanvas.style.width = "100%";
+	_backCanvas.style.height = "100%";
+	_backCanvas.style.position = "absolute";
+	_backCanvas.style.top = 0;
+	_backCanvas.style.left = 0;
+	_backCanvas.style.zIndex = 1;
+
 	//front drawing canvas
 	_canvas = document.createElement("canvas");
 	_canvas.classList.add("front");
 	container.appendChild(_canvas);
 	_canvas.width  = bounds.width;
 	_canvas.height = bounds.height;
-
+	_canvas.style.width = "100%";
+	_canvas.style.height = "100%";
+	_canvas.style.position = "absolute";
+	_canvas.style.top = 0;
+	_canvas.style.left = 0;
+	_canvas.style.zIndex = 2;
 	var ctx = _canvas.getContext('2d'); 
 
 	function beginDraw(size, colour, x,y)  { 

@@ -1,11 +1,25 @@
 			.touch-drawing {
 				height:100%;
 				width: 100%;
+				position: relative;
+			}
+
+			.touch-drawing .drawing {
+				position: absolute;
+				top: 20px;
+				bottom: 20px;
+				left:0;
+				right:0;
 			}
 
 			.touch-drawing .controls {
 				background-color: #dfdfdf;
 				height: 20px;
+			}
+
+			.touch-drawing .controls.lower {
+				position: absolute;
+				bottom:0;
 			}
 
 			.touch-drawing .controls ul {
@@ -40,23 +54,13 @@
 				height: 100%;
 			}
 
-			.touch-drawing canvas {
-				width: 100%;
-				height: 100%;
-			}
-
-			.touch-drawing canvas {
-				position: absolute;
-				left:0;
-				top: 0;
-			}
-
+		/*
 			.touch-drawing canvas .front {
 				z-index: 2;
 			}
 			.touch-drawing canvas .back {
 				z-index: 1;
-			}
-			.touch-drawing div.drawing {
+			}*/
+			/*.touch-drawing div.drawing {
 				position: relative;
-			}
+			}*/

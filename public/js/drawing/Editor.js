@@ -1,12 +1,9 @@
-
-
 RockDrawing.Editor = function(element) {
 	var palette = [ 
 		'#000', '#7F7F7F', '#FFF','#880015', '#ED1C24', '#FF7F27', '#FFF200', '#22B14C', '#00A2E8', '#3F48CC', '#A349A4'
 	];
 
 	var _drawingOffset, _surface;
-
 	var _colour, _tool, _toolSize;
 
 	//create div inside
@@ -23,7 +20,7 @@ RockDrawing.Editor = function(element) {
 
 	var drawing = document.createElement('div');
 	container.appendChild(drawing);
-	drawing.style.height=(container.offsetHeight-40) + "px";
+	//drawing.style.height=(container.offsetHeight-40) + "px";
 	drawing.classList.add('drawing');
 
 	//drawing controls (lower)
@@ -47,6 +44,7 @@ RockDrawing.Editor = function(element) {
 			li.appendChild(a);
 			all[j] = li;
 		}
+
 		parent.appendChild(colours);
 		all[0].classList.add('selected');
 	
@@ -144,7 +142,7 @@ RockDrawing.Editor = function(element) {
 	    timer = setTimeout(callback, ms);
 	  };
 	})();
-	
+
 	window.addEventListener(orientationEvent, function() {
 		delay(resizeCanvases, 200);
 	}, false);
