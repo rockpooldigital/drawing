@@ -11,7 +11,6 @@ var app = express()
 app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'));
 
-
 var io = require('socket.io').listen(server);
 io.set('log level', 1); 
 io.sockets.on('connection', function(socket) {

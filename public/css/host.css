@@ -1,0 +1,124 @@
+/*Some styles for the host*/
+* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; } /** http://paulirish.com/2012/box-sizing-border-box-ftw/ **/
+
+body{
+	background:#ddd;
+	font-family: 'Nobile', Helvetica, Arial, sans-serif;
+	font-size: 1em;
+	-webkit-backface-visibility: hidden; /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
+}
+h1,h2,h3,h4 {
+	font-family: 'Corben', Georgia, Times, serif;
+}
+h1{
+	font-size: 3em;
+	/*text-shadow:1px 1px 1px #ccc;*/
+	-webkit-text-stroke-width: 4px;
+	-webkit-text-stroke-color: #f5f5f5;
+	text-shadow: 3px 3px 3px #aaa;
+}
+h2{font-size: 1.5em;}
+h3{font-size: 1.2em;}
+h4{font-size: 1em;}
+
+#main {
+	position: absolute;	
+	left: 0;
+	top: 0;
+	width: 85%;
+	height: 100%;
+	padding: 20px 10px;
+}
+#logo{
+	float: left;
+	width: 10%;
+	max-width: 100px;
+}
+#mainTitle{
+	float: left;
+	width: auto;
+	margin-top: .3em;	
+	padding-left: .2em;
+	/*text-shadow: 1px 1px 1px #fff;*/
+}
+#canvasWrapper{}
+
+#supporting{
+	position: absolute;	
+	right: 0;
+	top: 0;
+	width: 15%;
+	min-width: 200px;
+	height: 100%;
+	background: #ccc;
+}
+
+/* Right hand side */
+#timerWrapper {
+	position: absolute;
+	top:0;
+	right:0;
+	height: 30%;
+	padding: 20px;
+	min-height: 300px;
+	width: 100%;
+}
+
+#timerSecs{
+	position: absolute;
+	top: 70px;
+	left: 10%;
+	width: 80%;
+	font-size: 5em;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	font-family: 'Corben', Georgia, Times, serif;
+}
+#timer {
+	position: absolute;
+	left:10%;
+	top:20px;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 80%;
+}
+.spin #timer {
+	-webkit-animation: spin 1s infinite linear;
+	-moz-animation: spin 1s infinite linear;
+	-ms-animation: spin 1s infinite linear;
+	-o-animation: spin 1s infinite linear;
+	animation: spin 1s infinite linear;
+}
+
+@-webkit-keyframes spin {
+	from {
+		-webkit-transform:rotate(0deg);
+	}
+	to {
+		-webkit-transform:rotate(360deg);
+	}
+}
+	
+#playerScores {
+	padding: 20px;
+	position: absolute;
+	top: 30%;
+	height: 40%;
+}
+#playerScores ol{}
+#playerScores li{}
+
+#join {
+	position: absolute;
+	bottom:0;
+	right:0;
+	height: 30%;
+	padding: 20px;
+}
+#join .title{}
+#theQRCode{
+	width: 100%;
+}
+#join .joinNow{}
+#join .joinNow strong{}
