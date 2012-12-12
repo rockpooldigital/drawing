@@ -19,9 +19,9 @@ var db = new mongo.Db(
 
 var gameData = require('./lib/gameData')(db);
 
-//app.engine('.html', require('ejs').__express);
-//app.set('views', __dirname + '/views');
-//app.set('view engine', 'html');
+app.engine('.html', require('ejs').__express);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'));
@@ -31,16 +31,18 @@ var io = require('socket.io').listen(server);
 io.set('log level', 1); 
 io.sockets.on('connection', function(socket) {
 	socket.on('draw', function(data) {
-			    socket.broadcast.emit('draw', data);
+		socket.broadcast.emit('draw', data);
 	});
+	socket.on('join', function(game) {
+		socket.join(game + '/player');
+		socket.join(game);
+	});
+	socket.on('host', function(game) {
+		socket.join(game + '/host');
+		socket.join(game);
+	})
 });
 
-
-
-app.post('/data/setupGame', function(req, res) {
-	var result = new ObjectID();
-	res.send(result);
-});
 
 app.post('/data/game/:id/join', function(req, res, next) {
 	console.log(req.body);
@@ -51,20 +53,28 @@ app.post('/data/game/:id/join', function(req, res, next) {
 	gameData.joinGame(req.params.id, req.body.playerName, function(err, identifier) {
 		if (err) return next(err);
 		res.send(identifier);
+		io.sockets.in(req.params.id + '/host').emit('playerJoined', {
+			name : req.body.playerName,
+			playerId: identifier
+		})
 	});
 });
+
+function nextTurn(game, next) {
+	gameData.createTurn(game, function(err, turn) {
+		//notify everyone of next turn
+		io.sockets.in(game).emit('turnInit', turn);
+		next(err, turn);
+	});
+}
 
 
 app.post('/data/game/:game/start', function(req, res, next) {
 	if (!req.params.game) return res.send(400);
-	gameData.createTurn(req.params.game, function(err, turn) {
+	nextTurn(req.params.game, function(err, turn) {
 		if (err) return next(err);
 		res.send(turn);
 	});
-
-	//notify the drawer of what the word is
-
-	//notify the other players
 });
 
 app.post('/data/game/:game/beginTurn', function(req, res, next) {
@@ -109,16 +119,68 @@ app.post('/data/game/:game/guessWord', function(req, res, next) {
 	
 });
 
-app.get('/data/game/:id', function(req, res, next) {
+app.get('/data/game/:id/players', function(req, res, next) {
 	if (!req.params.id) return res.send(400);
 
 	gameData.findGame(req.params.id, function(err, game) {
 		if(err) return next(err);
-		if(!game) return res.send(404);
-		res.send(game);
+		if(!game) return res.send([]);
+
+		res.send(game.players || []);
 	});
 });
 
+app.get('/data/game/:id/state', function(req, res, next) {
+	if (!req.params.id) return res.send(400);
+
+	gameData.findGame(req.params.id, function(err, game) {
+		if(err) return next(err);
+		if(!game || !game.turns || !game.turns.length) return res.send({
+			state : 'waiting',
+			turnId: null,
+			playerId :null
+		});
+
+		var turn = game.turns.pop();
+
+		var result = {
+			turnId : turn.identifier,
+			playerId : turn.playerIdentifier
+		};
+
+		if (!turn.word) {
+			result.state= 'word';
+		} else if (!turn.completed) {
+			result.state = 'drawing';
+		} else if (turn.completed) {
+			result.state = 'results';
+		}
+
+		res.send(result);
+	});
+});
+
+///Pages
+
+app.get('/game/:gameId', function(req, res) {
+	if (!/^[a-z0-9]{24}$/i.test(req.params.gameId)) return res.send(400);
+
+	res.render('host', { 
+		gameId : req.params.gameId,
+		joinUrl : config.URL + '/play/' + req.params.gameId,
+	});
+});
+
+app.get('/play/:gameId', function(req, res) {
+	if (!/^[a-z0-9]{24}$/i.test(req.params.gameId)) return res.send(400);
+	res.render('play', { 
+		gameId : req.params.gameId
+	});
+});
+
+app.get('/', function(req, res) {
+	res.redirect('/game/' + new ObjectID());
+});
 
 
-server.listen(8123);
+server.listen(config.PORT);

@@ -1,0 +1,4 @@
+obtaining location for clients to connect to
+reloading host
+reloading client
+word sent to all clients

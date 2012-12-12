@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link href="/css/reset.css" rel="stylesheet" type="text/css" >
+		<!-- GOogle fonts - Corben & Nobile -->
+		<link href="//fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
+		<link href="//fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css">
+		<link href="/css/html5bp.main.css" rel="stylesheet" type="text/css" >
+		<link href="/css/host.css" rel="stylesheet" type="text/css" >
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/knockout/2.1.0/knockout-min.js" type="text/javascript"></script>
+				    <script src="/socket.io/socket.io.js"></script>
+		<script src="/js/Data.js" type="text/javascript"></script>
+		<script src="/js/drawingPlayer.js" type="text/javascript"></script>
+
+		<script src="/js/drawing/Surface.js"></script>
+		<script src="/js/drawing/Editor.js"></script>
+
+		<link href="/js/drawing/drawing.css" rel="stylesheet" type="text/css" >
+
+	</head>
+
+	<body>
+		<div data-bind="ifnot: initialised">
+			Please wait spinny spinny
+		</diV>
+		<div data-bind="if: status() === 'waiting'">
+			Waiting for turn
+		</div>
+		<div data-bind="if: status() === 'chooseWord'">
+			Choose your word
+		</div>
+
+		<script>
+			function getQueryString() {
+			  var result = {}, queryString = location.search.substring(1),
+			      re = /([^&=]+)=([^&]*)/g, m;
+
+			  while (m = re.exec(queryString)) {
+			    result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+			  }
+
+			  return result;
+			}
+
+
+			jQuery(function($) {
+				drawingPlayer.init(document.body, '<%= gameId %>');
+			})
+		</script>
+	</body>
+</html>
