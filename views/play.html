@@ -27,19 +27,28 @@
 			Please wait spinny spinny
 		</diV>
 
-		<div class="choose-word">
-			<p>Pick one of the words:</p>
-			<ul data-bind="foreach: wordChoices" >
-				<li><a href="#" data-bind="click: chooseWord($data), text: $data"></a></li>
-			</ul>
-		<div>
-
-		<div data-bind="if: status() === 'waiting'">
+		
+		<div data-bind="if: state() === 'waiting'">
 			Waiting for turn
 		</div>
-		<div data-bind="if: status() === 'chooseWord'">
+		<div data-bind="if: state() === 'word'">
+			<p>Pick one of the words:</p>
+			<ul data-bind="foreach: wordChoices" >
+				<li><a href="#" data-bind="click: $parent.chooseWord, text: $data"></a></li>
+			</ul>
+		</div>
+
+		<div data-bind="if: state() === 'word' && isCurrentPlayer() ">
 			Choose your word
 		</div>
+
+
+		<div data-bind="if: state() === 'drawing' && isCurrentPlayer() ">
+			You are drawing now
+		</div>
+
+<pre data-bind="text: ko.toJSON($root)">
+</pre>
 
 		<script>
 			function getQueryString() {
@@ -55,7 +64,7 @@
 
 
 			jQuery(function($) {
-				drawingPlayer.init(document.body, '<%= gameId %>');
+				drawingPlayer.init(document.body, '<%= gameId %>', window.location.hash.substring(1));
 			})
 		</script>
 	</body>

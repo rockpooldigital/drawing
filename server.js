@@ -82,7 +82,7 @@ app.post('/data/game/:game/start', function(req, res, next) {
 });
 
 app.post('/data/game/:game/beginTurn', function(req, res, next) {
-	if (!req.body.word  || !req.body.userIdentifier) {
+	if (!req.body.word ) {
 		return res.send(400);
 	}
 
