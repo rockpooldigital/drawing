@@ -6,7 +6,8 @@ var drawingPlayer = function($, data) {
 		name:ko.observable(''),
 		gameId : ko.observable(''),
 		playerId: ko.observable(''),
-		status : ko.observable('waiting')
+		status : ko.observable('waiting'),
+		wordChoices : ko.observableArray()
 	};
 
 	function init(gameId, playerId, name) {
@@ -16,8 +17,8 @@ var drawingPlayer = function($, data) {
 		viewModel.initialised(true);
 
 		socket.emit('join',	gameId);
-		socket.on('turnInit', function(turnPlayerId) {
-			if (playerId === turnPlayerId) {
+		socket.on('stateChange', function(state) {
+			if (playerId === state.playerId) {
 				alert('it is your turn');
 			}
 		});
@@ -35,7 +36,10 @@ var drawingPlayer = function($, data) {
 			console.log(gameId);
 			viewModel.name(name);
 			data.joinGame(gameId, name)
-				.then(init, function() {
+				.then(function(playerId) {
+					window.location.hash= playerId;
+					init(gameId, playerId, name);
+				}, function() {
 					alert('Error joining game')
 				});
 			}

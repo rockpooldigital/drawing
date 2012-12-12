@@ -60,11 +60,15 @@ app.post('/data/game/:id/join', function(req, res, next) {
 	});
 });
 
-function nextTurn(game, next) {
-	gameData.createTurn(game, function(err, turn) {
-		//notify everyone of next turn
-		io.sockets.in(game).emit('turnInit', turn);
-		next(err, turn);
+function nextTurn(gameId, next) {
+	gameData.createTurn(gameId, function(err, turn) {
+		if (err) return next(err);
+		gameData.findGame(gameId, function(err, game) {
+			if (err) return next(err);
+			//notify everyone of next turn
+			pushStateNotification(game);
+			next(err, turn);	
+		});
 	});
 }
 
@@ -130,33 +134,45 @@ app.get('/data/game/:id/players', function(req, res, next) {
 	});
 });
 
+function generateStateMessage(game) {
+	if(!game || !game.turns || !game.turns.length) return {
+		state : 'waiting',
+		//turnId: null,
+		playerId :null,
+		turn  :null
+	};
+
+	var turn = game.turns.pop();
+
+	var result = {
+		turn : turn,
+		//turnId : turn.identifier,
+		playerId : turn.playerIdentifier
+	};
+
+	if (!turn.word) {
+		result.state= 'word';
+	} else if (!turn.completed) {
+		result.state = 'drawing';
+	} else if (turn.completed) {
+		result.state = 'results';
+	}
+
+	return result;
+}
+
+function pushStateNotification(game) {
+	io.sockets.in(game._id.toString()).emit('stateChange', 
+		generateStateMessage(game)
+	);
+}
+
 app.get('/data/game/:id/state', function(req, res, next) {
 	if (!req.params.id) return res.send(400);
 
 	gameData.findGame(req.params.id, function(err, game) {
 		if(err) return next(err);
-		if(!game || !game.turns || !game.turns.length) return res.send({
-			state : 'waiting',
-			turnId: null,
-			playerId :null
-		});
-
-		var turn = game.turns.pop();
-
-		var result = {
-			turnId : turn.identifier,
-			playerId : turn.playerIdentifier
-		};
-
-		if (!turn.word) {
-			result.state= 'word';
-		} else if (!turn.completed) {
-			result.state = 'drawing';
-		} else if (turn.completed) {
-			result.state = 'results';
-		}
-
-		res.send(result);
+		res.send(generateStateMessage(game));
 	});
 });
 

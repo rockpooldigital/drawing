@@ -26,6 +26,14 @@
 		<div data-bind="ifnot: initialised">
 			Please wait spinny spinny
 		</diV>
+
+		<div class="choose-word">
+			<p>Pick one of the words:</p>
+			<ul data-bind="foreach: wordChoices" >
+				<li><a href="#" data-bind="click: chooseWord($data), text: $data"></a></li>
+			</ul>
+		<div>
+
 		<div data-bind="if: status() === 'waiting'">
 			Waiting for turn
 		</div>
