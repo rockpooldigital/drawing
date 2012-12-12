@@ -18,6 +18,12 @@ var drawingData = function($) {
 
 		getState : function(id) {
 			return $.get('/data/game/' + id + '/state'); 
+		},
+
+		beginTurn : function(gameId, word) {
+			return $.post('/data/game/' + gameId + '/beginTurn', {
+				word : word
+			});
 		}
 	}
 }(jQuery);
