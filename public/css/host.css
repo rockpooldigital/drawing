@@ -1,6 +1,7 @@
 /*Some styles for the host*/
 * { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; } /** http://paulirish.com/2012/box-sizing-border-box-ftw/ **/
 
+body,html{height: 100%; overflow: hidden;}
 body{
 	background:#ddd;
 	font-family: 'Nobile', Helvetica, Arial, sans-serif;
@@ -41,14 +42,37 @@ h4{font-size: 1em;}
 	padding-left: .2em;
 	/*text-shadow: 1px 1px 1px #fff;*/
 }
-#canvasWrapper{}
+
+#currentPlayer{
+	position: absolute;
+	top: 0;
+	right: 240px;
+	width: 200px;
+	text-overflow:elipsis;
+	padding: .5em 0; 	
+}
+#gameState{
+	position: absolute;
+	top: 0;
+	right: 440px;
+	width: 200px;
+	padding: .5em 0; 	
+	text-overflow:elipsis;
+}
+
+#canvasWrapper{
+	border:4px solid #fff;
+	position:absolute;
+	bottom: 10px;
+	width: 960px;
+	height: 640px;
+}
 
 #supporting{
 	position: absolute;	
 	right: 0;
 	top: 0;
-	width: 15%;
-	min-width: 200px;
+	width: 220px;
 	height: 100%;
 	background: #ccc;
 }
@@ -58,32 +82,33 @@ h4{font-size: 1em;}
 	position: absolute;
 	top:0;
 	right:0;
-	height: 30%;
+	height: 240px;
+	max-height: 30%;
 	padding: 20px;
-	min-height: 300px;
 	width: 100%;
 }
 
 #timerSecs{
 	position: absolute;
-	top: 70px;
+	top: 60px;
 	left: 10%;
 	width: 80%;
-	font-size: 5em;
+	font-size: 4em;
 	text-align: center;
 	vertical-align: middle;
 	font-weight: bold;
 	font-family: 'Corben', Georgia, Times, serif;
 }
-#timer {
+#spinner {
 	position: absolute;
-	left:10%;
+	left:10px;
 	top:20px;
 	white-space: nowrap;
 	overflow: hidden;
-	width: 80%;
+	width: 200px;
+	height: 200px;
 }
-.spin #timer {
+.spin #spinner {
 	-webkit-animation: spin 1s infinite linear;
 	-moz-animation: spin 1s infinite linear;
 	-ms-animation: spin 1s infinite linear;
@@ -99,30 +124,54 @@ h4{font-size: 1em;}
 		-webkit-transform:rotate(360deg);
 	}
 }
-	
+
+#startWrap{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	display: block;
+	background: rgba(0, 0, 0, 0.6);
+}
+#startWrap button {
+	font-family: 'Corben', Georgia, Times, serif;
+	font-size: 1.3em;
+	border: 0;
+	border-radius: 4px;
+	margin-top:80px;
+}
+
 #playerScores {
 	padding: 20px;
 	position: absolute;
-	top: 30%;
-	height: 40%;
+	top: 240px;
+	max-height: 30%;
+	overflow: auto;
+	width: 100%;
 }
 #playerScores ol{}
 #playerScores li{
 	margin-left: 27px;
-	padding: 0 0 10px 0;
+	padding: 0 0 5px 0;
 	list-style-type: decimal;
 }
+#playerScores li strong{}
 
 #join {
 	position: absolute;
 	bottom:0;
 	right:0;
-	height: 30%;
+	max-height: 40%;
+	width: 100%;
 	padding: 20px;
 }
 #join .title{}
 #theQRCode{
 	width: 100%;
 }
-#join .joinNow{}
+#join .joinNow{
+	word-wrap:break-word;
+}
 #join .joinNow strong{}
