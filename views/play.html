@@ -8,7 +8,7 @@
 		<link href="//fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
 		<link href="//fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css">
 		<link href="/css/html5bp.main.css" rel="stylesheet" type="text/css" >
-		<link href="/css/host.css" rel="stylesheet" type="text/css" >
+		<link href="/css/play.css" rel="stylesheet" type="text/css" >
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/knockout/2.1.0/knockout-min.js" type="text/javascript"></script>
 				    <script src="/socket.io/socket.io.js"></script>
@@ -23,33 +23,32 @@
 	</head>
 
 	<body>
-		<div data-bind="ifnot: initialised">
-			Please wait spinny spinny
-		</diV>
+		<div id="container">
+			<div data-bind="visible: !initialised() || view() === 'wait'" id="waitMask">
+				Please wait
+			</div>
 
-		
-		<div data-bind="if: state() === 'waiting'">
-			Waiting for turn
+				<div id="drawing" >
+					<div class="header" data-bind="if: view() === 'draw'">You are drawing <span data-bind="text:word" class="word"></span>
+						<button>Pass Turn</button>
+					</div>
+					<div class="painting"  data-bind="afterRender: initEditor()"></div>
+				</div>
+
+				<div data-bind="visible: view() === 'word'" class="full" style="display:none;" id="pickWord">
+					<p>It is your turn. Pick a word to draw.</p>
+					<ul data-bind="foreach: wordChoices" >
+						<li><a href="#" data-bind="click: $parent.chooseWord, text: $data"></a></li>
+					</ul>
+				</div>
+
+				<div data-bind="visible: view() === 'guess'"  style="display:none;" class="full" id="guess">
+					<input type="text" data-bind="value: guess, valueUpdate: 'afterkeydown'" style="font-size:1.5em;">
+					<br /><button data-bind="click: submitGuess, enable: guess().length > 1">Guess</button>
+				</div>
+
+			<div data-bind="text: ko.toJSON($root)" id="debug"></div>
 		</div>
-		<div data-bind="if: state() === 'word'">
-			<p>Pick one of the words:</p>
-			<ul data-bind="foreach: wordChoices" >
-				<li><a href="#" data-bind="click: $parent.chooseWord, text: $data"></a></li>
-			</ul>
-		</div>
-
-		<div data-bind="if: state() === 'word' && isCurrentPlayer() ">
-			Choose your word
-		</div>
-
-
-		<div data-bind="if: state() === 'drawing' && isCurrentPlayer() ">
-			You are drawing now
-		</div>
-
-<pre data-bind="text: ko.toJSON($root)">
-</pre>
-
 		<script>
 			function getQueryString() {
 			  var result = {}, queryString = location.search.substring(1),
@@ -64,7 +63,7 @@
 
 
 			jQuery(function($) {
-				drawingPlayer.init(document.body, '<%= gameId %>', window.location.hash.substring(1));
+				drawingPlayer.init('<%= gameId %>', window.location.hash.substring(1));
 			})
 		</script>
 	</body>

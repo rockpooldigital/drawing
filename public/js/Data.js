@@ -24,6 +24,12 @@ var drawingData = function($) {
 			return $.post('/data/game/' + gameId + '/beginTurn', {
 				word : word
 			});
+		},
+		submitGuess : function(gameId, playerId, word) {
+			return $.post('/data/game/' + gameId + '/guessWord', {
+				word : word,
+				playerIdentifier :playerId
+			});
 		}
 	}
 }(jQuery);

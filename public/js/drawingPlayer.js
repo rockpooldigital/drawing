@@ -3,28 +3,38 @@ var drawingPlayer = function($, data) {
 
 	var viewModel = {
 		initialised : ko.observable(false),
-		//name:ko.observable(''),
 		gameId : ko.observable(''),
 		playerId: ko.observable(''),
 		state : ko.observable('waiting'),
 		wordChoices : ko.observableArray(),
 		turnId : ko.observable(),
 		isCurrentPlayer : ko.observable(),
-		word: ko.observable()
+		word: ko.observable(),
+		guess :ko.observable(""),
+		view : ko.observable("wait")
 	};
 
+	viewModel.submitGuess = function() {
+		data.submitGuess(viewModel.gameId(), viewModel.playerId(), viewModel.guess())
+					.then(function(result) {
+						//if fail show alert
+						//if success then the game should move on anyway
+					});
+	}
+
 	viewModel.chooseWord = function(word) {
-		//alert('You have chosen: ' + word)
-		data.beginTurn(viewModel.gameId(), word)
-		.then(function() {
-			console.log(arguments);
-		}, function() {
-			console.log(arguments);
-		})
+		data.beginTurn(viewModel.gameId(), word);
+	}
+
+	viewModel.initEditor = function() {
+		var elem = $('#drawing .painting')[0];
+	//	setTimeout(function() {
+			var editor = RockDrawing.Editor(elem);
+		//}, 100);
 	}
 
 	function updateState(state) {
-		console.log(state);
+		console.log("STATE", state);
 
 		var isCurrentPlayer = viewModel.playerId() === state.playerId;
 
@@ -33,19 +43,24 @@ var drawingPlayer = function($, data) {
 			return;
 		}
 
+		var turn = state.turn || {};
+
 		viewModel.isCurrentPlayer(isCurrentPlayer); 
 		viewModel.state(state.state);
-		viewModel.word(state.turn.word);
-		viewModel.wordChoices(state.turn.choices);
-		if (isCurrentPlayer && state.state === "word") {
-			
-		} else if (isCurrentPlayer && state.state === "drawing") {
+		viewModel.word(turn.word);
+		viewModel.wordChoices(turn.choices);
 
+		if (isCurrentPlayer && state.state === "word") {
+			viewModel.view('word');
+		} else if (isCurrentPlayer && state.state === "drawing") {
+			viewModel.view('draw');
 			//draw picture
 		} else if (!isCurrentPlayer && state.state === "drawing") {
 			//guess picture
+			viewModel.view('guess');
 		} else {
 			//wait
+					viewModel.view('wait');
 		}
 	}
 
@@ -63,8 +78,8 @@ var drawingPlayer = function($, data) {
 	}	
 
 	return {
-		init : function(elem, gameId, playerId) {
-			ko.applyBindings(viewModel, elem);
+		init : function(gameId, playerId) {
+			ko.applyBindings(viewModel);
 			if (playerId && playerId.length === 24) {
 				init(gameId, playerId);
 			} else {
@@ -82,6 +97,9 @@ var drawingPlayer = function($, data) {
 					alert('Error joining game')
 				});
 			}
+
+
+
 		}
 	}
 }(jQuery, drawingData);

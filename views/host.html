@@ -47,7 +47,7 @@
 					</section>
 
 					<section id="playerScores" data-bind="if: players().length > 0">
-						<button data-bind="enable : players().length >= 2 && state() === 'waiting', click : startGame">Start Game</button> 
+						<button data-bind="enable : players().length >= 1 && state() === 'waiting', click : startGame">Start Game</button> 
 						<h2>Scores</h2>
 						<ol data-bind="foreach: players">
 							<li>
