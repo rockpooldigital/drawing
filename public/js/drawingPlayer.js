@@ -26,12 +26,25 @@ var drawingPlayer = function($, data) {
 		data.beginTurn(viewModel.gameId(), word);
 	}
 
-	viewModel.initEditor = function() {
+
+	var isDrawing =false;
+	function onCommand(command){ 
+		if (isDrawing) {
+			command.player = viewModel.isCurrentPlayer();
+		}
+	}
+
+	function initEditor() {
 		var elem = $('#drawing .painting')[0];
 	//	setTimeout(function() {
 			var editor = RockDrawing.Editor(elem);
+			editor.onCommand = onCommand;
 		//}, 100);
 	}
+
+
+
+	viewModel.initEditor = initEditor;
 
 	function updateState(state) {
 		console.log("STATE", state);
@@ -50,10 +63,12 @@ var drawingPlayer = function($, data) {
 		viewModel.word(turn.word);
 		viewModel.wordChoices(turn.choices);
 
+		isDrawing= false;
 		if (isCurrentPlayer && state.state === "word") {
 			viewModel.view('word');
 		} else if (isCurrentPlayer && state.state === "drawing") {
 			viewModel.view('draw');
+			isDrawing=true;
 			//draw picture
 		} else if (!isCurrentPlayer && state.state === "drawing") {
 			//guess picture
