@@ -110,11 +110,21 @@ app.post('/data/game/:game/guessWord', function(req, res, next) {
 
 		if (turn.word.toLowerCase() === req.body.word.toLowerCase()) {
 			//guessed the right word 
-
+			gameData.completeTurn(req.params.game, turn.identifier.toString(), req.body.playerIdentifier, function(err) {
+				if (err) return next(err);
+				nextTurn(req.params.game, function(err, turn) {
+					if (err) return next(err);
+					res.sent({ correct: true });
+				});
+						
+			}) 
 			//if correct go to next turn
 			//gameData.createTurn();
 		} else {
-			//store guess
+			//todo : store guess
+			res.send({
+				correct: false
+			});
 		}
 	});
 
