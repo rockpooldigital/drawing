@@ -41,7 +41,10 @@ io.sockets.on('connection', function(socket) {
 	socket.on('host', function(game) {
 		socket.join(game + '/host');
 		socket.join(game);
-	})
+	});
+	socket.on('drawCommand', function(cmd) {
+		io.sockets.in(cmd.game + '/host').emit('drawCommand', cmd);
+	});
 });
 
 

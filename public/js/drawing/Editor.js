@@ -135,7 +135,8 @@
 		clearLi.appendChild(clearBtn);
 		tools.appendChild(clearLi);
 		controls.appendChild(tools);
-		clearBtn.onclick = function() {
+		clearBtn.onclick = function(e) {
+			e.preventDefault();
 			_surface.clear();
 		}
 
@@ -144,26 +145,6 @@
 		
 		_toolSize = 4;
 		_colour = "#000";	
-
-		function resizeCanvases() {
-			_surface.adjustSizeAndRedraw();
-			_drawingOffset = drawing.getBoundingClientRect();
-		}
-
-	  /*var orientationEvent = ("onorientationchange" in window) ? "orientationchange" : "resize";
-
-	  var delay = (function () {
-		  var timer = 0;
-		  return function (callback, ms) {
-		    clearTimeout(timer);
-		    timer = setTimeout(callback, ms);
-		  };
-		})();
-
-		window.addEventListener(orientationEvent, function() {
-			delay(resizeCanvases, 200);
-		}, false);
-	*/
 
 		function touchEvent(callback, preventDefault) {
 			return function(e) {

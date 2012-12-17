@@ -1,5 +1,5 @@
 var drawingHost = function($, data) {
-	var socket = io.connect();
+
 	
 	var viewModel = {
 		players : ko.observableArray(),
@@ -32,11 +32,21 @@ var drawingHost = function($, data) {
 	function changeState(state) {
 		console.log(state);
 		viewModel.state(state.state);
+		//if (_surface) {
+			_surface.clear();
+	//	}
 	}
 
+	var _surface;
+
 	function initGame(id, joinUrl) {
+		var socket = io.connect();
 		viewModel.id(id);
 		viewModel.joinUrl(joinUrl);
+		var canvasDiv = $('#canvasWrapper')[0];
+		console.log($('#canvasWrapper'));
+
+		_surface= RockDrawing.CreateSurface(canvasDiv);
 
 		data.getPlayers(id).then(function(players) {
 			if (players.length > 0) {
@@ -58,7 +68,31 @@ var drawingHost = function($, data) {
 			socket.on('stateChange', changeState);
 		}, function(e) {
 			alert('Error fetching data');
-		})
+		});
+
+
+		var buffer = [];
+		var processNext;
+		var isDrawing = false;
+
+		processNext = function() {
+			if (buffer.length > 0) {
+				isDrawing = true;
+				//console.log("executing command");
+				_surface.redrawCommand(buffer.shift(), processNext);
+			} else {
+				isDrawing = false;
+			}
+		}
+
+		socket.on('drawCommand', function(data) {
+			console.log("cmd", data);
+			buffer.push(data.command);
+
+			if (!isDrawing) {
+				processNext();
+			}
+		});
 	}
 
 	return {

@@ -29,7 +29,7 @@
 		<div data-bind="ifnot: initialised">
 			Please wait spinny spinny
 		</diV>
-		<div data-bind="if:initialised">
+		<div>
 				<section id="main">
 					<div id="gameState">State of game: <span data-bind="text: state"></span></div>
 
@@ -37,9 +37,7 @@
 
 					<img src="/img/pencil.png" alt="Let's draw" id="logo" />
 					<h1 id="mainTitle">draw</h1>
-					<div id="canvasWrapper" class="clearfix">
-						<canvas id="theCanvas"></canvas>
-					</div>
+					<div id="canvasWrapper" class="clearfix"></div>
 
 				</section>
 

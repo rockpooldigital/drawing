@@ -102,6 +102,7 @@
 
 
 		var bounds = container.getBoundingClientRect();
+		console.log("bounds", bounds);
 
 		function drawSmoothPath(context, set) {
 			context.moveTo(set[0][0], set[0][1]);

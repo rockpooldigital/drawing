@@ -14,10 +14,17 @@ var drawingPlayer = function($, data) {
 		view : ko.observable("wait")
 	};
 
+	var _editor;
+
 	viewModel.submitGuess = function() {
 		data.submitGuess(viewModel.gameId(), viewModel.playerId(), viewModel.guess())
 					.then(function(result) {
 						//if fail show alert
+						if (!result.correct) {
+							alert('Incorrect guess');
+						} else {
+							viewModel.guess('');
+						}
 						//if success then the game should move on anyway
 					});
 	}
@@ -29,16 +36,21 @@ var drawingPlayer = function($, data) {
 
 	var isDrawing =false;
 	function onCommand(command){ 
-		if (isDrawing) {
-			command.player = viewModel.isCurrentPlayer();
-		}
+		//if (isDrawing) {
+			//alert('command')
+			socket.emit('drawCommand', {
+				command : command,
+				player :  viewModel.playerId(),
+				game : viewModel.gameId()
+			});
+		//}
 	}
 
 	function initEditor() {
 		var elem = $('#drawing .painting')[0];
 	//	setTimeout(function() {
-			var editor = RockDrawing.Editor(elem);
-			editor.onCommand = onCommand;
+			_editor = RockDrawing.Editor(elem);
+			_editor.surface.onCommand = onCommand;
 		//}, 100);
 	}
 
@@ -63,13 +75,12 @@ var drawingPlayer = function($, data) {
 		viewModel.word(turn.word);
 		viewModel.wordChoices(turn.choices);
 
-		isDrawing= false;
+		//isDrawing= false;
+		_editor.surface.clear();
 		if (isCurrentPlayer && state.state === "word") {
 			viewModel.view('word');
 		} else if (isCurrentPlayer && state.state === "drawing") {
 			viewModel.view('draw');
-			isDrawing=true;
-			//draw picture
 		} else if (!isCurrentPlayer && state.state === "drawing") {
 			//guess picture
 			viewModel.view('guess');
