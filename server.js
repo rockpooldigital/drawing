@@ -68,7 +68,7 @@ app.post('/data/game/:id/join', function(req, res, next) {
 function nextTurn(gameId, next) {
 	gameData.createTurn(gameId, function(err, turn) {
 		if (err) return next(err);
-		pushStateNotificationForGameId(gameId);
+		pushStateNotificationForGameId(gameId, next);
 	});
 }
 
@@ -108,21 +108,21 @@ app.post('/data/game/:game/guessWord', function(req, res, next) {
 	if (!req.body.word || !req.body.playerIdentifier) return res.send(400);
 
 	gameData.findTurn(req.params.game, function(err, turn) {
+		console.log("cb findTurn", err, turn);
 		if (err) return next(err);
-		if (!turn) return res.send(404);
+		if (!turn || !turn.word) return res.send(404);
 
 		if (turn.word.toLowerCase() === req.body.word.toLowerCase()) {
 			//guessed the right word 
 			gameData.completeTurn(req.params.game, turn.identifier.toString(), req.body.playerIdentifier, function(err) {
+				console.log("cb completeTurn", err);
 				if (err) return next(err);
 				nextTurn(req.params.game, function(err, turn) {
+					console.log("cb nextTurn", err, turn);
 					if (err) return next(err);
-					res.sent({ correct: true });
+					res.send({ correct: true });
 				});
-						
 			}) 
-			//if correct go to next turn
-			//gameData.createTurn();
 		} else {
 			//todo : store guess
 			res.send({
@@ -172,18 +172,20 @@ function generateStateMessage(game) {
 	return result;
 }
 
-function pushStateNotification(game) {
+function pushStateNotification(game, next) {
 	var msg = generateStateMessage(game);
-	console.log("STATE", game._id, msg);
-	//console.log("CLIENTS", io.sockets.in(game._id.toString()));
+
 	io.sockets.in(game._id.toString()).emit('stateChange', msg);
+	if (next) {
+	 	next(null);
+	}
 }
 
 function pushStateNotificationForGameId(gameId, next) {
 	gameData.findGame(gameId, function(err, game) {
 		if (err) return next(err);
-		pushStateNotification(game);
-		if (next) return next(game);
+		pushStateNotification(game, next);
+		//if (next) return next(game);
 	});
 }
 
