@@ -28,43 +28,29 @@
 				Please wait
 			</div>
 
-				<div id="drawing" >
-					<div class="header" data-bind="if: view() === 'draw'">You are drawing <span data-bind="text:word" class="word"></span>
-						<button>Pass Turn</button>
-					</div>
-					<div class="painting"  data-bind="afterRender: initEditor()"></div>
+			<div id="drawing" >
+				<div class="header" data-bind="if: view() === 'draw'">You are drawing <span data-bind="text:word" class="word"></span>
+					<button data-bind="click: passTurn">Pass Turn</button>
 				</div>
+				<div class="painting"  data-bind="afterRender: initEditor()"></div>
+			</div>
 
-				<div data-bind="visible: view() === 'word'" class="full" style="display:none;" id="pickWord">
-					<p>It is your turn. Pick a word to draw.</p>
-					<ul data-bind="foreach: wordChoices" >
-						<li><a href="#" data-bind="click: $parent.chooseWord, text: $data"></a></li>
-					</ul>
-				</div>
+			<div data-bind="visible: view() === 'word'" class="full" style="display:none;" id="pickWord">
+				<p>It is your turn. Pick a word to draw.</p>
+				<ul data-bind="foreach: wordChoices" >
+					<li><a href="#" data-bind="click: $parent.chooseWord, text: $data"></a></li>
+				</ul>
+			</div>
 
-				<div data-bind="visible: view() === 'guess'"  style="display:none;" class="full" id="guess">
-					<input type="text" data-bind="value: guess, valueUpdate: 'afterkeydown'" style="font-size:1.5em;">
-					<br /><button data-bind="click: submitGuess, enable: guess().length > 1">Guess</button>
-				</div>
-
-			<div data-bind="text: ko.toJSON($root)" id="debug"></div>
+			<div data-bind="visible: view() === 'guess'"  style="display:none;" class="full" id="guess">
+				<input type="text" data-bind="value: guess, valueUpdate: 'afterkeydown'" style="font-size:1.5em;">
+				<br /><button data-bind="click: submitGuess, enable: guess().length > 1">Guess</button>
+			</div>
 		</div>
 		<script>
-			function getQueryString() {
-			  var result = {}, queryString = location.search.substring(1),
-			      re = /([^&=]+)=([^&]*)/g, m;
-
-			  while (m = re.exec(queryString)) {
-			    result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-			  }
-
-			  return result;
-			}
-
-
 			jQuery(function($) {
 				drawingPlayer.init('<%= gameId %>', window.location.hash.substring(1));
-			})
+			});
 		</script>
 	</body>
 </html>

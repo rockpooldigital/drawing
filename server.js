@@ -133,6 +133,23 @@ app.post('/data/game/:game/guessWord', function(req, res, next) {
 	});
 });
 
+app.post('/data/game/:game/pass', function(req, res, next) {
+	if (!req.params.game || !req.body.playerIdentifier) return res.send(400);	
+
+	gameData.findTurn(req.params.game, function(err, turn) {
+		if (err) return next(err);
+		if (!turn) return res.send(404);
+
+	gameData.passTurn(req.params.game, turn.identifier.toString(), req.body.playerIdentifier, function(err) {
+			if (err) return next(err);
+			nextTurn(req.params.game, function(err, turn) {
+				if (err) return next(err);
+				res.send({ correct: true });
+			});
+		}) 
+	});
+});
+
 app.get('/data/game/:id/players', function(req, res, next) {
 	if (!req.params.id) return res.send(400);
 

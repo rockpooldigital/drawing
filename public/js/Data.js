@@ -30,6 +30,11 @@ var drawingData = function($) {
 				word : word,
 				playerIdentifier :playerId
 			});
+		},
+		passTurn : function(gameId, playerId) {
+			return $.post('/data/game/' + gameId + '/pass', {
+				playerIdentifier :playerId
+			});
 		}
 	}
 }(jQuery);

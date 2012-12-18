@@ -282,6 +282,7 @@
 		}
 
 		surface.redrawCommand = redrawCommand;
+		surface.getBounds = function() { return bounds; }
 		console.log($(container));
 		var timeout;
 		$(window).resize(function() {

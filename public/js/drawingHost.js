@@ -98,9 +98,30 @@ var drawingHost = function($, data) {
 			}
 		}
 
+		var drawingDiv = $('#canvasWrapper');
+
 		socket.on('drawCommand', function(data) {
-			console.log("cmd", data);
+			//console.log("cmd", data);
 			buffer.push(data.command);
+
+			if (data.command.path) {
+				var maxPlayerCanvas = Math.max(data.screenWidth, data.screenHeight);
+				
+				if (maxPlayerCanvas) {
+					var ourCanvasMin = Math.min(drawingDiv.width(), drawingDiv.height());
+
+					var scalar = ourCanvasMin / maxPlayerCanvas;
+					console.log("our", ourCanvasMin, "player", maxPlayerCanvas);
+					console.log(scalar);
+					data.command.toolSize = Math.ceil(data.command.toolSize * scalar); 
+					data.command.path = data.command.path.map(function(p) {
+						return [
+							Math.ceil(p[0] * scalar), 
+							Math.ceil(p[1] * scalar)
+						];
+					});
+				}
+			}
 
 			if (!isDrawing) {
 				processNext();

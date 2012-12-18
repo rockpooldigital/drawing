@@ -29,19 +29,27 @@ var drawingPlayer = function($, data) {
 					});
 	}
 
+	viewModel.passTurn = function() {
+		data.passTurn(viewModel.gameId(), viewModel.playerId());
+	}
+
 	viewModel.chooseWord = function(word) {
 		data.beginTurn(viewModel.gameId(), word);
 	}
+
 
 
 	var isDrawing =false;
 	function onCommand(command){ 
 		//if (isDrawing) {
 			//alert('command')
+			var bounds = _editor.surface.getBounds();
 			socket.emit('drawCommand', {
 				command : command,
 				player :  viewModel.playerId(),
-				game : viewModel.gameId()
+				game : viewModel.gameId(),
+				screenWidth : bounds.width,
+				screenHeight: bounds.height
 			});
 		//}
 	}
