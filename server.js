@@ -48,6 +48,68 @@ io.sockets.on('connection', function(socket) {
 });
 
 
+function nextTurn(gameId, next) {
+	gameData.createTurn(gameId, function(err, turn) {
+		if (err) return next(err);
+		pushStateNotificationForGameId(gameId, next);
+	});
+}
+
+function generateStateMessage(game) {
+	if(!game || !game.turns || !game.turns.length) return {
+		state : 'waiting',
+		//turnId: null,
+		playerId :null,
+		turn  :null
+	};
+
+	var turn = game.turns.pop();
+
+	var result = {
+		turn : turn,
+		//turnId : turn.identifier,
+		playerId : turn.playerIdentifier
+	};
+
+	if (!turn.word) {
+		result.state= 'word';
+	} else if (!turn.completed) {
+		result.state = 'drawing';
+	} else if (turn.completed) {
+		result.state = 'results';
+	}
+
+	return result;
+}
+
+function pushStateNotification(game, next) {
+	var msg = generateStateMessage(game);
+
+	io.sockets.in(game._id.toString()).emit('stateChange', msg);
+	if (next) {
+	 	next(null);
+	}
+}
+
+function pushStateNotificationForGameId(gameId, next) {
+	gameData.findGame(gameId, function(err, game) {
+		if (err) return next(err);
+		pushStateNotification(game, next);
+		//if (next) return next(game);
+	});
+}
+
+function pushScoreUpdate(gameId, next) {
+	gameData.findGame(gameId, function(err, game) {
+		if (err) return next(err);
+		io.sockets.in(game._id.toString() + '/host')
+							.emit('scoreUpdate', game.players);
+		console.log("PLAYER", game._id.toString() + '/host', game.players);
+		next();
+	});
+}
+
+
 app.post('/data/game/:id/join', function(req, res, next) {
 	console.log(req.body);
 	if (!req.params.id || !req.body.playerName) {
@@ -59,18 +121,12 @@ app.post('/data/game/:id/join', function(req, res, next) {
 		res.send(identifier);
 		io.sockets.in(req.params.id + '/host').emit('playerJoined', {
 			name : req.body.playerName,
-			playerId: identifier
+			playerId: identifier,
+			score: 0
 		});
 		pushStateNotificationForGameId(req.params.id);
 	});
 });
-
-function nextTurn(gameId, next) {
-	gameData.createTurn(gameId, function(err, turn) {
-		if (err) return next(err);
-		pushStateNotificationForGameId(gameId, next);
-	});
-}
 
 
 app.post('/data/game/:game/start', function(req, res, next) {
@@ -161,59 +217,6 @@ app.get('/data/game/:id/players', function(req, res, next) {
 	});
 });
 
-function generateStateMessage(game) {
-	if(!game || !game.turns || !game.turns.length) return {
-		state : 'waiting',
-		//turnId: null,
-		playerId :null,
-		turn  :null
-	};
-
-	var turn = game.turns.pop();
-
-	var result = {
-		turn : turn,
-		//turnId : turn.identifier,
-		playerId : turn.playerIdentifier
-	};
-
-	if (!turn.word) {
-		result.state= 'word';
-	} else if (!turn.completed) {
-		result.state = 'drawing';
-	} else if (turn.completed) {
-		result.state = 'results';
-	}
-
-	return result;
-}
-
-function pushStateNotification(game, next) {
-	var msg = generateStateMessage(game);
-
-	io.sockets.in(game._id.toString()).emit('stateChange', msg);
-	if (next) {
-	 	next(null);
-	}
-}
-
-function pushStateNotificationForGameId(gameId, next) {
-	gameData.findGame(gameId, function(err, game) {
-		if (err) return next(err);
-		pushStateNotification(game, next);
-		//if (next) return next(game);
-	});
-}
-
-function pushScoreUpdate(gameId, next) {
-	gameData.findGame(gameId, function(err, game) {
-		if (err) return next(err);
-		io.sockets.in(game._id.toString() + '/host')
-							.emit('scoreUpdate', game.players);
-		console.log("PLAYER", game._id.toString() + '/host', game.players);
-		next();
-	});
-}
 
 app.get('/data/game/:id/state', function(req, res, next) {
 	if (!req.params.id) return res.send(400);

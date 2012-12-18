@@ -98,12 +98,7 @@ var drawingHost = function($, data) {
 			}
 		}
 
-		var drawingDiv = $('#canvasWrapper');
-
-		socket.on('drawCommand', function(data) {
-			//console.log("cmd", data);
-			buffer.push(data.command);
-
+		function preProcessCommand(data) {
 			if (data.command.path) {
 				var maxPlayerCanvas = Math.max(data.screenWidth, data.screenHeight);
 				
@@ -113,15 +108,23 @@ var drawingHost = function($, data) {
 					var scalar = ourCanvasMin / maxPlayerCanvas;
 					console.log("our", ourCanvasMin, "player", maxPlayerCanvas);
 					console.log(scalar);
-					data.command.toolSize = Math.ceil(data.command.toolSize * scalar); 
+					data.command.toolSize = Math.round(data.command.toolSize * scalar); 
 					data.command.path = data.command.path.map(function(p) {
 						return [
-							Math.ceil(p[0] * scalar), 
-							Math.ceil(p[1] * scalar)
+							Math.round(p[0] * scalar), 
+							Math.round(p[1] * scalar)
 						];
 					});
 				}
 			}
+		}
+
+		var drawingDiv = $('#canvasWrapper');
+
+		socket.on('drawCommand', function(data) {
+			preProcessCommand(data);
+
+			buffer.push(data.command);
 
 			if (!isDrawing) {
 				processNext();
