@@ -17,7 +17,7 @@ var drawingHost = function($, data) {
 	var Player = function(data) {
 		return {
 			name : ko.observable(data.name),
-			score : ko.observable(0),
+			score : ko.observable(data.score),
 			id : ko.observable(data.playerId)
 		}
 	}
@@ -39,6 +39,16 @@ var drawingHost = function($, data) {
 
 	var _surface;
 
+	function setPlayers(players) {
+		viewModel.players.removeAll();
+		ko.utils.arrayPushAll(viewModel.players(), players.map(function(p) {
+					return new Player(p);
+				}));
+		
+		viewModel.players.sort(function(a,b) { return a.score - b.score; });
+		viewModel.players.valueHasMutated();
+	}	
+
 	function initGame(id, joinUrl) {
 		var socket = io.connect();
 		viewModel.id(id);
@@ -50,15 +60,18 @@ var drawingHost = function($, data) {
 
 		data.getPlayers(id).then(function(players) {
 			if (players.length > 0) {
-				ko.utils.arrayPushAll(viewModel.players(), players.map(function(p) {
-					return new Player(p);
-				}));
-				viewModel.players.valueHasMutated();
+				setPlayers(players);
 			}
 
 			socket.on('playerJoined', function(data) {
 				viewModel.players.push(new Player(data));
 			});
+		});
+
+		//should update rather than just reloading whole list
+		socket.on('scoreUpdate', function(players) {
+			setPlayers(players);
+
 		});
 
 		data.getState(id).then(function(state) {

@@ -112,26 +112,25 @@ app.post('/data/game/:game/guessWord', function(req, res, next) {
 		if (err) return next(err);
 		if (!turn || !turn.word) return res.send(404);
 
-		if (turn.word.toLowerCase() === req.body.word.toLowerCase()) {
-			//guessed the right word 
-			gameData.completeTurn(req.params.game, turn.identifier.toString(), req.body.playerIdentifier, function(err) {
-				console.log("cb completeTurn", err);
-				if (err) return next(err);
-				nextTurn(req.params.game, function(err, turn) {
-					console.log("cb nextTurn", err, turn);
-					if (err) return next(err);
-					res.send({ correct: true });
-				});
-			}) 
-		} else {
-			//todo : store guess
-			res.send({
+		if (turn.word.toLowerCase() !== req.body.word.toLowerCase()) {
+			//todo: store guess
+			return 	res.send({
 				correct: false
 			});
 		}
-	});
 
-	
+		//guessed the right word 
+		gameData.completeTurn(req.params.game, turn.identifier.toString(), req.body.playerIdentifier, function(err) {
+			if (err) return next(err);
+			pushScoreUpdate(req.params.game, function(err) {
+				if (err) return next(err);
+				nextTurn(req.params.game, function(err, turn) {
+					if (err) return next(err);
+					res.send({ correct: true });
+				});
+			});
+		}) 
+	});
 });
 
 app.get('/data/game/:id/players', function(req, res, next) {
@@ -186,6 +185,16 @@ function pushStateNotificationForGameId(gameId, next) {
 		if (err) return next(err);
 		pushStateNotification(game, next);
 		//if (next) return next(game);
+	});
+}
+
+function pushScoreUpdate(gameId, next) {
+	gameData.findGame(gameId, function(err, game) {
+		if (err) return next(err);
+		io.sockets.in(game._id.toString() + '/host')
+							.emit('scoreUpdate', game.players);
+		console.log("PLAYER", game._id.toString() + '/host', game.players);
+		next();
 	});
 }
 

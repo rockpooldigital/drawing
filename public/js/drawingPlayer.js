@@ -75,11 +75,12 @@ var drawingPlayer = function($, data) {
 		viewModel.word(turn.word);
 		viewModel.wordChoices(turn.choices);
 
-		//isDrawing= false;
-		_editor.surface.clear();
+		
 		if (isCurrentPlayer && state.state === "word") {
 			viewModel.view('word');
 		} else if (isCurrentPlayer && state.state === "drawing") {
+			//isDrawing= false;
+			_editor.surface.clear();
 			viewModel.view('draw');
 		} else if (!isCurrentPlayer && state.state === "drawing") {
 			//guess picture
