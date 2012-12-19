@@ -45,31 +45,25 @@ h4{font-size: 1em;}
 }
 #logoWrapper{
 	z-index: 1;
-
 	position: absolute;
 	top: 0;
 	left: 0;
 	height: 10%;
+	width: 100%;
 }
 #logo{
-	float: left;
+	float: right;
 	width: 30%;
 	max-width: 100px;
 	margin-top: 5px;
 }
 #mainTitle{
-	float: left;
+	float: right;
 	width: auto;	
-	padding-left: .05em;
+	padding-right: .05em;
+	text-align: right;
 }
 
-#currentPlayer{
-	position: absolute;
-	top: 0;
-	right: 240px;
-	width: 200px;
-	padding: .5em 0; 	
-}
 #gameState{
 	position: absolute;
 	top: 0;
@@ -113,15 +107,15 @@ h4{font-size: 1em;}
 
 #timerWrapper .timerSecs{
 	position: absolute;
-	top: .45em;
+	top: .8em;
 	left: 10%;
 	width: 80%;
-	font-size: 4em;
+	font-size: 3em;
 	text-align: center;
 	vertical-align: middle;
 	font-weight: bold;
 	font-family: 'Corbin', Georgia, Times, serif;
-	color: #000;
+	color: black;
 	text-shadow: 2px 2px 2px #333;
 }
 #timerWrapper .spinner {
@@ -148,40 +142,92 @@ h4{font-size: 1em;}
 	}
 }
 
-#startWrap{
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
+.button {
 	text-align: center;
 	display: block;
-	background: rgba(0, 0, 0, 0.6);
-}
-#startWrap button {
 	font-family: 'Lobster', Georgia, Times, serif;
-	font-size: 1.3em;
-	border: 0;
-	border-radius: 4px;
-	margin-top:80px;
-}
+	font-size: 3em;
+	border: 4px solid #000;
+	border-radius: .5em;
+	text-shadow:1px 1px 1px #fff;
 
+	background: rgb(253,244,22); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(253,244,22,1) 0%, rgba(252,247,156,1) 36%, rgba(252,243,83,1) 65%, rgba(252,244,95,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(253,244,22,1)), color-stop(36%,rgba(252,247,156,1)), color-stop(65%,rgba(252,243,83,1)), color-stop(100%,rgba(252,244,95,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(253,244,22,1) 0%,rgba(252,247,156,1) 36%,rgba(252,243,83,1) 65%,rgba(252,244,95,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(253,244,22,1) 0%,rgba(252,247,156,1) 36%,rgba(252,243,83,1) 65%,rgba(252,244,95,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(253,244,22,1) 0%,rgba(252,247,156,1) 36%,rgba(252,243,83,1) 65%,rgba(252,244,95,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(253,244,22,1) 0%,rgba(252,247,156,1) 36%,rgba(252,243,83,1) 65%,rgba(252,244,95,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdf416', endColorstr='#fcf45f',GradientType=0 ); /* IE6-9 */
+
+	box-shadow: 2px 2px 10px #333;
+
+}
+#start.button{
+	position: fixed;
+	left: 23%;
+	top: 42.5%;
+	width: 40%;
+	margin: -1em -15% 0 0;
+	padding: .5em;
+	cursor: pointer;
+
+	border: 20px double #000;
+
+	-webkit-transition:left 1s ease-in-out, border 0.5s ease-in-out;
+	-moz-transition:left 1s ease-in-out, border 0.5s ease-in-out;
+	-o-transition:left 1s ease-in-out, border 0.5s ease-in-out;
+	-ms-transition:left 1s ease-in-out, border 0.5s ease-in-out;
+	transition:left 1s ease-in-out, border 0.5s ease-in-out;
+}
+#start.button:hover,
+#start.button:focus{
+	border: 4px solid #000;
+}
+#start.button.playing {
+	left: -100%;
+}
+#currentPlayer{
+	position: fixed;
+top: 0;
+left: 0;
+font-family: 'Lobster', Georgia, Times, serif;
+font-size: 1.6em;
+padding: .2em 1.2em;
+background: #FDF416;
+box-shadow: 3px 3px 0px #5A5151;
+color: black;
+text-shadow: 1px 1px 1px white;
+}
 #playerScores {
 	padding: 10px;
 	position: absolute;
-	top: 40%;
+	top: 30%;
 	max-height: 30%;
 	width: 100%;
 }
 #playerScores ol{text-align: left;}
 #playerScores li{
-	margin-left: 27px;
-	padding: 0 0 5px 0;
-	list-style-type: decimal;
+	margin:0;
+	padding: 0 0 8px .5em;
 }
-#playerScores li strong{}
+#playerScores li .name{
+	float:left;
+	width:60%;
+	padding-top: .5em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#playerScores li .score{
+	float: left;
+	font-size: 2em;
+	font-weight: bold;
+	padding: 0 .5em 0 0;
+}
+
 #join {
-	-webkit-transition: all 1s ease-in-out;
+	-webkit-transition: right 1s ease-in-out;
 }
 #join.maxi {
 	position: fixed;

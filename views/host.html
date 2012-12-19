@@ -36,7 +36,7 @@
 		<div>
 				<section id="main">
 					<div id="canvasWrapper" class="clearfix"></div>
-
+					<article id="currentPlayer">Player 1 - you're up!</article>
 					<aside id="">
 						<div id="gameState">State of game: <span data-bind="text: state"></span></div>
 						<div id="currentPlayer" data-bind="if: currentPlayer, visible : currentPlayer">Current Player: <strong data-bind="text: currentPlayer().name()"></strong></div>
@@ -57,11 +57,11 @@
 
 					<section id="playerScores" data-bind="if: players().length > 0">
 						<h2>Scores</h2>
-						<button data-bind="enable : players().length >= 2 && state() === 'waiting', click : startGame">Start Game</button> 
+						<button id="start" class="button" data-bind="enable : players().length >= 2 && state() === 'waiting', click : startGame, css: { playing: state() !== 'waiting' }">Start Game</button> 
 						<ol data-bind="foreach: players">
-							<li>
-								<span class="name" data-bind="text: name" ></span>:
-								<span class="score" data-bind="text: score"></span>
+							<li class="clearfix">
+								<strong class="score" data-bind="text: score"></strong>
+								<em class="name" data-bind="text: name" ></em>
 							</li>
 						</ol>
 					</section>
