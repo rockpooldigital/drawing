@@ -3,13 +3,14 @@ var countdownTimer = (function($) {
 		console.log(element);
 		var t = $(element).find('.timerSecs')[0];
 		var w = element;
-		var s = t.innerText;
+		///var s = t.innerText;
 		var i = null;
-		function start(secs){
-			if(secs !== undefined){
-				s = parseInt(secs); // start the timer with a new countdown
-				t.innerHTML = s;
-			}
+
+		var endTime;
+
+		function start(secs) { 
+			var s = parseInt(secs);
+			endTime = new Date(new Date().getTime() + s*1000);
 			w.classList.add("spin");
 			interval();
 		}
@@ -23,16 +24,17 @@ var countdownTimer = (function($) {
 		}
 
 		interval = function(){
-			i = window.setInterval(function() {
-				//console.log('fire');
-				if(s == 0){
+			var f = function() {
+				var now = new Date();
+				var s =Math.ceil((endTime - now) / 1000);
+				t.innerText = s;
+				if(s <= 0){
 					stop();
 					return;
-				}else{
-					s--;
-					t.innerText = s;
 				}
-			}, 1000); // every second
+			}
+			i = window.setInterval(f, 500); 
+			f();
 		}
 		return {
 			start : start, 
@@ -80,6 +82,7 @@ var drawingHost = function($, data) {
 		if (state.state === 'drawing') {
 			timer.start(30);
 		} else {
+				//	timer.start(20)
 			timer.stop();
 		}
 	}
