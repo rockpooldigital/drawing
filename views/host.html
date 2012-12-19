@@ -67,7 +67,7 @@
 					</section>
 
 					<!-- <section id="join" class="maxi" > during the "before starting" screen-->
-					<section id="join" class="mini" >
+					<section id="join" data-bind="css: { mini: players().length >= 2, maxi: players().length < 2 }">
 						<h2 class="title">Join in</h2>
 						<a data-bind="attr: { href: joinUrl }" class="link"><img 
 							data-bind="attr: { src : 'https://chart.googleapis.com/chart?cht=qr&amp;chs=500x500&amp;chl=' + encodeURIComponent(joinUrl())  }"
