@@ -111,7 +111,7 @@ h4{font-size: 1em;}
 	text-align: center;
 }
 
-#timerSecs{
+#timerWrapper .timerSecs{
 	position: absolute;
 	top: .45em;
 	left: 10%;
@@ -124,14 +124,14 @@ h4{font-size: 1em;}
 	color: #000;
 	text-shadow: 2px 2px 2px #333;
 }
-#spinner {
+#timerWrapper .spinner {
 	white-space: nowrap;
 	overflow: hidden;
 	width: 140px;
 	height: 140px;
 	margin: 0 auto;
 }
-.spin #spinner {
+#timerWrapper.spin .spinner {
 	-webkit-animation: spin 1s infinite linear;
 	-moz-animation: spin 1s infinite linear;
 	-ms-animation: spin 1s infinite linear;
