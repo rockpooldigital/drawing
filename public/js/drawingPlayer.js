@@ -82,20 +82,17 @@ var drawingPlayer = function($, data) {
 		viewModel.state(state.state);
 		viewModel.word(turn.word);
 		viewModel.wordChoices(turn.choices);
-
 		
 		if (isCurrentPlayer && state.state === "word") {
 			viewModel.view('word');
 		} else if (isCurrentPlayer && state.state === "drawing") {
-			//isDrawing= false;
 			_editor.surface.clear();
 			viewModel.view('draw');
 		} else if (!isCurrentPlayer && state.state === "drawing") {
-			//guess picture
 			viewModel.view('guess');
+			$('#guessWord').focus();
 		} else {
-			//wait
-					viewModel.view('wait');
+			viewModel.view('wait');
 		}
 	}
 

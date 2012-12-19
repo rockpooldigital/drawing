@@ -51,8 +51,8 @@
 					
 					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum veniam saepe placeat nam distinctio tempora id voluptatem hic maxime tenetur nihil expedita omnis magnam repellat odio quo animi consequuntur blanditiis!</p> -->
 					<section id="timerWrapper">
-						<img src="/img/spinner140.png" id="spinner" alt="" />
-						<time datetime="" id="timerSecs">60</time>
+						<img src="/img/spinner140.png" class="spinner" alt="" />
+						<time datetime="" class="timerSecs">60</time>
 					</section>
 
 					<section id="playerScores" data-bind="if: players().length > 0">
@@ -78,35 +78,6 @@
 			</div>
 		
 		<script>
-			t = document.getElementById('timerSecs');
-			w = document.getElementById('timerWrapper');
-			s = t.innerText;
-
-			start = function(secs){
-				if(secs !== undefined){
-					s = parseInt(secs); // start the timer with a new countdown
-					t.innerHTML = s;
-				}
-				w.classList.add("spin");
-				interval();
-				
-			}
-			stop = function(){
-				w.classList.remove("spin");
-				window.clearInterval(i);
-			}
-
-			interval = function(){
-				i = window.setInterval(function() {
-					if(s == 0){
-						stop();
-						return;
-					}else{
-						s--;
-						t.innerText = s;
-					}
-				}, 1000); // every second
-			}
 			jQuery(function($) {
 				drawingHost.init(document.body, 
 					'<%= gameId %>',

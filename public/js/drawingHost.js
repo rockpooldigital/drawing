@@ -1,6 +1,50 @@
+var countdownTimer = (function($) {
+	function init(element) {
+		console.log(element);
+		var t = $(element).find('.timerSecs')[0];
+		var w = element;
+		var s = t.innerText;
+		var i = null;
+		function start(secs){
+			if(secs !== undefined){
+				s = parseInt(secs); // start the timer with a new countdown
+				t.innerHTML = s;
+			}
+			w.classList.add("spin");
+			interval();
+		}
+
+		function stop(){
+			w.classList.remove("spin");
+			if (i) {
+				window.clearInterval(i);
+				i= null;
+			}	
+		}
+
+		interval = function(){
+			i = window.setInterval(function() {
+				//console.log('fire');
+				if(s == 0){
+					stop();
+					return;
+				}else{
+					s--;
+					t.innerText = s;
+				}
+			}, 1000); // every second
+		}
+		return {
+			start : start, 
+			stop : stop
+		}
+	}
+	return init;
+})(jQuery);
+
+
 var drawingHost = function($, data) {
 
-	
 	var viewModel = {
 		players : ko.observableArray(),
 		id: ko.observable(''),
@@ -32,12 +76,15 @@ var drawingHost = function($, data) {
 	function changeState(state) {
 		console.log(state);
 		viewModel.state(state.state);
-		//if (_surface) {
-			_surface.clear();
-	//	}
+		_surface.clear();
+		if (state.state === 'drawing') {
+			timer.start(30);
+		} else {
+			timer.stop();
+		}
 	}
 
-	var _surface;
+	var _surface, timer;
 
 	function setPlayers(players) {
 		viewModel.players.removeAll();
@@ -50,6 +97,8 @@ var drawingHost = function($, data) {
 	}	
 
 	function initGame(id, joinUrl) {
+		timer = countdownTimer($('#timerWrapper')[0]);
+
 		var socket = io.connect();
 		viewModel.id(id);
 		viewModel.joinUrl(joinUrl);

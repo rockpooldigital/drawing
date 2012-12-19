@@ -156,6 +156,26 @@ app.post('/data/game/:game/beginTurn', function(req, res, next) {
 			if (err) return next(err);
 			res.send(200);
 			pushStateNotificationForGameId(req.params.game);
+
+
+			//Set turn to expire in 30s
+			var activeTurn = turn;
+			setTimeout(function() {
+				console.log("timer");
+				gameData.findTurn(req.params.game, function(err, turn) {
+					console.log(err,turn);
+					console.log(activeTurn);
+					if (!err && turn) {				
+						if (turn.identifier.equals(activeTurn.identifier)) {
+							console.log('Expire');
+							passTurn(req.params.game, activeTurn.playerIdentifier.toString(), function(err) {
+								if (err) return next(err);
+								res.send({ });	
+							});	
+						}
+					}
+				});
+			}, 30 * 1000);
 		});
 	});
 });
@@ -189,21 +209,24 @@ app.post('/data/game/:game/guessWord', function(req, res, next) {
 	});
 });
 
-app.post('/data/game/:game/pass', function(req, res, next) {
-	if (!req.params.game || !req.body.playerIdentifier) return res.send(400);	
-
-	gameData.findTurn(req.params.game, function(err, turn) {
+function passTurn(gameId, playerId, next) {
+	gameData.findTurn(gameId, function(err, turn) {
 		if (err) return next(err);
 		if (!turn) return res.send(404);
 
-	gameData.passTurn(req.params.game, turn.identifier.toString(), req.body.playerIdentifier, function(err) {
+	gameData.passTurn(gameId, turn.identifier.toString(), playerId, function(err) {
 			if (err) return next(err);
-			nextTurn(req.params.game, function(err, turn) {
-				if (err) return next(err);
-				res.send({ correct: true });
-			});
+			nextTurn(gameId, next);
 		}) 
 	});
+}
+
+app.post('/data/game/:game/pass', function(req, res, next) {
+	if (!req.params.game || !req.body.playerIdentifier) return res.send(400);	
+	passTurn(req.params.game, req.body.playerIdentifier, function(err) {
+		if (err) return next(err);
+		res.send({ });	
+	});	
 });
 
 app.get('/data/game/:id/players', function(req, res, next) {
