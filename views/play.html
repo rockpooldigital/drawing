@@ -43,7 +43,7 @@
 			</div>
 
 			<div data-bind="visible: view() === 'guess'"  style="display:none;" class="full" id="guess">
-				<input type="text" data-bind="value: guess, valueUpdate: 'afterkeydown'" style="font-size:1.5em;">
+				<input type="text" data-bind="value: guess, valueUpdate: 'afterkeydown'" id="guessWord" style="font-size:1.5em;">
 				<br /><button data-bind="click: submitGuess, enable: guess().length > 1">Guess</button>
 			</div>
 		</div>
