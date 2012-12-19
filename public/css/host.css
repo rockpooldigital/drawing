@@ -10,15 +10,28 @@ body{
 }
 h1,h2,h3,h4 {
 	font-family: 'Lobster', Georgia, Times, serif;
+	color: #000;
+	text-shadow: 1px 1px 1px #EEE;
 }
 h1{
-	font-size: 3em;
+	font-size: 3.5em;
 	/*text-shadow:1px 1px 1px #ccc;*/
-	-webkit-text-stroke-width: 4px;
+	-webkit-text-stroke-width: 2px;
 	-webkit-text-stroke-color: #f5f5f5;
 	text-shadow: 3px 3px 3px #aaa;
+	text-transform: capitalize;
+	font-weight: bold;
 }
-h2{font-size: 1.5em;}
+h2{
+    font-size: 1.5em;
+    padding: .125em 0;
+    /*background: #AF1D8C;*/
+    background: #FDF416;
+    margin: 0 -5% .5em -11%;
+    box-shadow: 3px 3px 0px #5A5151;
+    color: #000;
+    text-shadow: 1px 1px 1px #fff;
+}
 h3{font-size: 1.2em;}
 h4{font-size: 1em;}
 
@@ -33,18 +46,21 @@ h4{font-size: 1em;}
 #logoWrapper{
 	z-index: 1;
 
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 10%;
 }
 #logo{
 	float: left;
-	width: 10%;
+	width: 30%;
 	max-width: 100px;
+	margin-top: 5px;
 }
 #mainTitle{
 	float: left;
-	width: auto;
-	margin-top: .3em;	
-	padding-left: .2em;
-	/*text-shadow: 1px 1px 1px #fff;*/
+	width: auto;	
+	padding-left: .05em;
 }
 
 #currentPlayer{
@@ -86,9 +102,9 @@ h4{font-size: 1em;}
 /* Right hand side */
 #timerWrapper {
 	position: absolute;
-	top:0;
+	top: 10%;
 	right:0;
-	height: 240px;
+	height: 20%;
 	max-height: 30%;
 	padding: 10px;
 	width: 100%;
@@ -97,14 +113,16 @@ h4{font-size: 1em;}
 
 #timerSecs{
 	position: absolute;
-	top: 1em;
+	top: .45em;
 	left: 10%;
 	width: 80%;
-	font-size: 3.5em;
+	font-size: 4em;
 	text-align: center;
 	vertical-align: middle;
 	font-weight: bold;
-	font-family: 'Lobster', Georgia, Times, serif;
+	font-family: 'Corbin', Georgia, Times, serif;
+	color: #000;
+	text-shadow: 2px 2px 2px #333;
 }
 #spinner {
 	white-space: nowrap;
@@ -151,9 +169,8 @@ h4{font-size: 1em;}
 #playerScores {
 	padding: 10px;
 	position: absolute;
-	top: 240px;
+	top: 40%;
 	max-height: 30%;
-	overflow: auto;
 	width: 100%;
 }
 #playerScores ol{text-align: left;}
@@ -163,16 +180,45 @@ h4{font-size: 1em;}
 	list-style-type: decimal;
 }
 #playerScores li strong{}
-
 #join {
-	position: absolute;
+	-webkit-transition: all 1s ease-in-out;
+}
+#join.maxi {
+	position: fixed;
+	top:0;
+	right:0;
+	height: 100%;
+	width: 100%;
+	padding: 10px;
+	background: rgba(0,0,0,0.5)
+}
+#join.maxi .title{
+	font-size: 5em;
+	margin: 0 10% 0.05em;
+}
+#join.maxi .link{
+	float: left;
+	width: 36%;
+	margin:0 0 0 12%;
+}
+#join.maxi #theQRCode{
+	width: 100%;
+}
+#join.maxi .joinNow{
+	background: #fff;
+	font-size: 3em;
+	float: right;
+	width: 36%;
+	margin:0 12% 0 0;
+}
+#join.mini {
+	position: fixed;
 	bottom:0;
 	right:0;
 	max-height: 40%;
-	width: 100%;
+	width: 15%;
 	padding: 10px;
 }
-#join .title{}
 #theQRCode{
 	float: left;
 	width: 60%;
