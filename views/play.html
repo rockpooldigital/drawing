@@ -47,6 +47,10 @@
 				<br /><button data-bind="click: submitGuess, enable: guess().length > 1">Guess</button>
 			</div>
 		</div>
+
+		<audio id="ding">
+		  <source src="/ding.mp3" type="audio/mpeg">
+		</audio>
 		<script>
 			jQuery(function($) {
 				drawingPlayer.init('<%= gameId %>', window.location.hash.substring(1));

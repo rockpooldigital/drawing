@@ -66,6 +66,13 @@ var drawingPlayer = function($, data) {
 
 	viewModel.initEditor = initEditor;
 
+	function ding() {
+		var dinger = document.getElementById('ding');
+		if (dinger && dinger.play) {
+			dinger.play();
+		}
+	}
+
 	function updateState(state) {
 		console.log("STATE", state);
 
@@ -82,7 +89,7 @@ var drawingPlayer = function($, data) {
 		viewModel.state(state.state);
 		viewModel.word(turn.word);
 		viewModel.wordChoices(turn.choices);
-		
+
 		if (isCurrentPlayer && state.state === "word") {
 			viewModel.view('word');
 		} else if (isCurrentPlayer && state.state === "drawing") {
@@ -91,6 +98,7 @@ var drawingPlayer = function($, data) {
 		} else if (!isCurrentPlayer && state.state === "drawing") {
 			viewModel.view('guess');
 			$('#guessWord').focus();
+			ding();
 		} else {
 			viewModel.view('wait');
 		}
