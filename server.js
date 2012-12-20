@@ -121,7 +121,7 @@ app.post('/data/game/:id/join', function(req, res, next) {
 		res.send(identifier);
 		io.sockets.in(req.params.id + '/host').emit('playerJoined', {
 			name : req.body.playerName,
-			playerId: identifier,
+			identifier: identifier,
 			score: 0
 		});
 		pushStateNotificationForGameId(req.params.id);

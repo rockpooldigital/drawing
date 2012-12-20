@@ -1,6 +1,6 @@
 var countdownTimer = (function($) {
 	function init(element) {
-		console.log(element);
+		//console.log(element);
 		var t = $(element).find('.timerSecs')[0];
 		var w = element;
 		///var s = t.innerText;
@@ -53,31 +53,51 @@ var drawingHost = function($, data) {
 		joinUrl : ko.observable(''),
 		state : ko.observable('waiting'),
 		initialised : ko.observable(false),
-		currentPlayer: ko.observable()
+		turn :ko.observable()
 	};
+
+	viewModel.started = ko.computed(function() {
+		return viewModel.state() !== 'waiting';
+	});
+
+	viewModel.playerCount = ko.computed(function() {
+		return viewModel.players().length;
+	});
+
+	viewModel.pendingStart = ko.computed(function() {
+		return !viewModel.started() && viewModel.playerCount() >= 2;
+	});
+
+	viewModel.currentPlayer = ko.computed(function() {
+		var turn = viewModel.turn();
+		if (!turn) { return null; }
+		if (turn.playerIdentifier) {
+			var player = ko.utils.arrayFirst(viewModel.players(), function(p) {
+				return p.id() === turn.playerIdentifier;
+			});
+
+			return player;
+		}
+		return null;
+	});
 
 	viewModel.startGame = function() {
 		data.startGame(viewModel.id());
 	};
 
 	var Player = function(data) {
-		return {
+		var result =  {
 			name : ko.observable(data.name),
 			score : ko.observable(data.score),
-			id : ko.observable(data.playerId)
+			id : ko.observable(data.identifier)
 		}
-	}
-
-	function initialiseTurn(turn) {
-		viewModel.currentPlayer({
-			name : ko.observable(turn.player.name)
-		});
-		viewModel.state('word');
+		return result;
 	}
 
 	function changeState(state) {
 		console.log(state);
 		viewModel.state(state.state);
+		viewModel.turn(state.turn);
 		_surface.clear();
 		if (state.state === 'drawing') {
 			timer.start(30);
@@ -106,7 +126,7 @@ var drawingHost = function($, data) {
 		viewModel.id(id);
 		viewModel.joinUrl(joinUrl);
 		var canvasDiv = $('#canvasWrapper')[0];
-		console.log($('#canvasWrapper'));
+		//console.log($('#canvasWrapper'));
 
 		_surface= RockDrawing.CreateSurface(canvasDiv);
 
@@ -158,8 +178,8 @@ var drawingHost = function($, data) {
 					var ourCanvasMin = Math.min(drawingDiv.width(), drawingDiv.height());
 
 					var scalar = ourCanvasMin / maxPlayerCanvas;
-					console.log("our", ourCanvasMin, "player", maxPlayerCanvas);
-					console.log(scalar);
+					//console.log("our", ourCanvasMin, "player", maxPlayerCanvas);
+					//console.log(scalar);
 					data.command.toolSize = Math.round(data.command.toolSize * scalar); 
 					data.command.path = data.command.path.map(function(p) {
 						return [
@@ -187,7 +207,7 @@ var drawingHost = function($, data) {
 	return {
 		init : function(elem, gameId, joinUrl) {
 			ko.applyBindings(viewModel, elem);
-			console.log(joinUrl);
+			//console.log(joinUrl);
 			initGame(gameId, joinUrl);			
 		}
 	}

@@ -36,10 +36,9 @@
 		<div>
 				<section id="main">
 					<div id="canvasWrapper" class="clearfix"></div>
-					<article id="currentPlayer">Player 1 - you're up!</article>
+					<article id="currentPlayer" data-bind="if: currentPlayer, visible : currentPlayer"><span data-bind="text: currentPlayer().name"></span> - you're up!</article>
 					<aside id="">
 						<div id="gameState">State of game: <span data-bind="text: state"></span></div>
-						<div id="currentPlayer" data-bind="if: currentPlayer, visible : currentPlayer">Current Player: <strong data-bind="text: currentPlayer().name()"></strong></div>
 					</aside>
 				</section>
 
@@ -48,8 +47,7 @@
 						<img src="/img/pencil.png" alt="Let's draw" id="logo" />
 						<h1 id="mainTitle">draw</h1>
 					</section>
-					
-					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum veniam saepe placeat nam distinctio tempora id voluptatem hic maxime tenetur nihil expedita omnis magnam repellat odio quo animi consequuntur blanditiis!</p> -->
+
 					<section id="timerWrapper">
 						<img src="/img/spinner140.png" class="spinner" alt="" />
 						<time datetime="" class="timerSecs">60</time>
@@ -57,7 +55,6 @@
 
 					<section id="playerScores" data-bind="if: players().length > 0">
 						<h2>Scores</h2>
-						<button id="start" class="button" data-bind="enable : players().length >= 2 && state() === 'waiting', click : startGame, css: { playing: state() !== 'waiting' }">Start Game</button> 
 						<ol data-bind="foreach: players">
 							<li class="clearfix">
 								<strong class="score" data-bind="text: score"></strong>
@@ -67,17 +64,18 @@
 					</section>
 
 					<!-- <section id="join" class="maxi" > during the "before starting" screen-->
-					<section id="join" data-bind="css: { mini: players().length >= 2, maxi: players().length < 2 }">
+					<section id="join" data-bind="css: { mini: started, maxi: !started() }">
 						<h2 class="title">Join in</h2>
 						<a data-bind="attr: { href: joinUrl }" class="link"><img 
 							data-bind="attr: { src : 'https://chart.googleapis.com/chart?cht=qr&amp;chs=500x500&amp;chl=' + encodeURIComponent(joinUrl())  }"
 							 id="theQRCode" alt="Scan the code to join in"/></a>
-						<p class="joinNow">Or type <strong data-bind="text: id"></strong></p>
+						<!--<p class="joinNow">Or type <strong data-bind="text: id"></strong></p>-->
+						<button id="start" class="button" data-bind="enable: pendingStart, click: startGame, visible: pendingStart">Start Game</button> 
 					</section>
 
 				</section>
 			</div>
-		
+	<!--<pre data-bind="text: ko.toJSON($root, null, 2)"></pre>-->
 		<script>
 			jQuery(function($) {
 				drawingHost.init(document.body, 
