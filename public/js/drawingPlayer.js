@@ -92,13 +92,13 @@ var drawingPlayer = function($, data) {
 
 		if (isCurrentPlayer && state.state === "word") {
 			viewModel.view('word');
+			ding();
 		} else if (isCurrentPlayer && state.state === "drawing") {
 			_editor.surface.clear();
 			viewModel.view('draw');
 		} else if (!isCurrentPlayer && state.state === "drawing") {
 			viewModel.view('guess');
 			$('#guessWord').focus();
-			ding();
 		} else {
 			viewModel.view('wait');
 		}
