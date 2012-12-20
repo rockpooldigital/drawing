@@ -10,14 +10,12 @@
 		<link rel="apple-touch-icon" sizes="72x72" href="/img/icons/apple-touch-icon-72x72.png"/>
 		<link rel="apple-touch-icon" sizes="114x114" href="/img/icons/apple-touch-icon-114x114.png"/>
 		<link href="/css/reset.css" rel="stylesheet" type="text/css" >
-		<!-- GOogle fonts - Corben & Nobile -->
-		<!-- <link href="//fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
-		<link href="//fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css"> -->
+		<link href="/css/html5bp.main.css" rel="stylesheet" type="text/css" >
+		
 		<!-- Google Font pairings - http://bit.ly/qCTNeX --> 
     <!-- Lobster & Cabin --> 
     <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'> 
     <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'> 
-		<link href="/css/html5bp.main.css" rel="stylesheet" type="text/css" >
 		<link href="/css/host.css" rel="stylesheet" type="text/css" >
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/knockout/2.1.0/knockout-min.js" type="text/javascript"></script>
@@ -37,9 +35,9 @@
 				<section id="main">
 					<div id="canvasWrapper" class="clearfix"></div>
 					<article id="currentPlayer" data-bind="if: currentPlayer, visible : currentPlayer"><span data-bind="text: currentPlayer().name"></span> - you're up!</article>
-					<aside id="">
-						<div id="gameState">State of game: <span data-bind="text: state"></span></div>
-					</aside>
+					
+					<div id="gameState" data-bind="visible: state() === 'word' ">Choosing word...</div>
+					
 				</section>
 
 				<section id="supporting">
