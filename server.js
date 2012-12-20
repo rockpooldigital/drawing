@@ -175,7 +175,7 @@ app.post('/data/game/:game/beginTurn', function(req, res, next) {
 						}
 					}
 				});
-			}, 30 * 1000);
+			}, 90 * 1000);
 		});
 	});
 });

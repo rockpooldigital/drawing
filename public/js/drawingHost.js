@@ -100,7 +100,7 @@ var drawingHost = function($, data) {
 		viewModel.turn(state.turn);
 		_surface.clear();
 		if (state.state === 'drawing') {
-			timer.start(30);
+			timer.start(90);
 		} else {
 				//	timer.start(20)
 			timer.stop();
