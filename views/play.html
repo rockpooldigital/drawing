@@ -29,7 +29,7 @@
 			</div>
 
 			<div id="drawing" >
-				<div class="header" data-bind="if: view() === 'draw'">You are drawing <span data-bind="text:word" class="word"></span>
+				<div class="header" data-bind="if: view() === 'draw'"><span data-bind="text:word" class="word"></span>
 					<button data-bind="click: passTurn">Pass Turn</button>
 				</div>
 				<div class="painting"  data-bind="afterRender: initEditor()"></div>

@@ -113,6 +113,9 @@ var drawingPlayer = function($, data) {
 			updateState(s);
 
 			socket.emit('join',	gameId);
+			socket.on('reconnect', function() {
+				socket.emit('join',	gameId);
+			});
 			socket.on('stateChange', updateState);
 		});
 	}	

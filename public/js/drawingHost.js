@@ -149,6 +149,9 @@ var drawingHost = function($, data) {
 		data.getState(id).then(function(state) {
 			viewModel.initialised(true);
 			socket.emit('host', id);
+			socket.on('reconnect', function() {
+				socket.emit('host', id);
+			});
 			changeState(state);
 			socket.on('stateChange', changeState);
 		}, function(e) {
