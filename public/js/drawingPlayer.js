@@ -17,7 +17,9 @@ var drawingPlayer = function($, data) {
 	var _editor;
 
 	viewModel.submitGuess = function() {
-		data.submitGuess(viewModel.gameId(), viewModel.playerId(), viewModel.guess())
+		var word = viewModel.guess();
+		if (word.length < 1) return;
+		data.submitGuess(viewModel.gameId(), viewModel.playerId(), word)
 					.then(function(result) {
 						//if fail show alert
 						if (!result.correct) {
