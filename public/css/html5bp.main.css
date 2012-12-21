@@ -296,3 +296,93 @@ textarea {
         page-break-after: avoid;
     }
 }
+
+
+
+/*Some styles for the host*/
+* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; } /** http://paulirish.com/2012/box-sizing-border-box-ftw/ **/
+
+body,html{height: 100%; overflow: hidden;}
+body{
+    background:#ddd;
+    font-family: 'Cabin', Helvetica, Arial, sans-serif;
+    font-size: 1em;
+    -webkit-backface-visibility: hidden; /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
+}
+h1,h2,h3,h4 {
+    font-family: 'Lobster', Georgia, Times, serif;
+    color: #000;
+    text-shadow: 1px 1px 1px #EEE;
+}
+h1{
+    font-size: 3.5em;
+    /*text-shadow:1px 1px 1px #ccc;*/
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #f5f5f5;
+    text-shadow: 3px 3px 3px #aaa;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+h2{
+    font-size: 1.5em;
+    padding: .125em 0;
+    /*background: #AF1D8C;*/
+    background: #FDF416;
+    margin: 0 0 .5em 0;
+    box-shadow: 3px 3px 0px #5A5151;
+    color: #000;
+    text-shadow: 1px 1px 1px #fff;
+}
+h3{font-size: 1.2em;}
+h4{font-size: 1em;}
+
+.button {
+    text-align: center;
+    display: block;
+    font-family: 'Lobster', Georgia, Times, serif;
+    font-size: 3em;
+    border: 4px solid #000;
+    border-radius: .5em;
+    text-shadow:1px 1px 1px #fff;
+
+    background: rgb(253,244,22); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(253,244,22,1) 0%, rgba(252,247,156,1) 36%, rgba(252,243,83,1) 65%, rgba(252,244,95,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(253,244,22,1)), color-stop(36%,rgba(252,247,156,1)), color-stop(65%,rgba(252,243,83,1)), color-stop(100%,rgba(252,244,95,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(253,244,22,1) 0%,rgba(252,247,156,1) 36%,rgba(252,243,83,1) 65%,rgba(252,244,95,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(253,244,22,1) 0%,rgba(252,247,156,1) 36%,rgba(252,243,83,1) 65%,rgba(252,244,95,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(253,244,22,1) 0%,rgba(252,247,156,1) 36%,rgba(252,243,83,1) 65%,rgba(252,244,95,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(253,244,22,1) 0%,rgba(252,247,156,1) 36%,rgba(252,243,83,1) 65%,rgba(252,244,95,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdf416', endColorstr='#fcf45f',GradientType=0 ); /* IE6-9 */
+
+    box-shadow: 2px 2px 10px #333;
+
+}
+.button.small{
+    font-size: 1em;
+}
+.button.quiet{
+    background: #ccc;
+}
+.button.center{
+    margin: 0 auto;
+}
+
+.yellowTitle{
+    padding: .25em 1em; 
+    font-family: 'Lobster', Georgia, Times, serif;
+    font-size: 1.6em;
+    padding: .2em 1.2em;
+    background: #FDF416;
+    box-shadow: 3px 3px 0px #5A5151;
+    color: black;
+    text-shadow: 1px 1px 1px white; 
+}
+.fRight {
+    float: right;
+}
+.fL {
+    float: left;
+}
+.inline {
+    display: inline-block;
+}
