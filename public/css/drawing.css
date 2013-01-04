@@ -1,0 +1,97 @@
+.touch-drawing {
+	height:100%;
+	width: 100%;
+	position: relative;
+}
+
+.touch-drawing .drawing {
+	position: absolute;
+	top: 20px;
+	bottom: 10%;
+	left:0;
+	right:0;
+}
+
+.touch-drawing .controls {
+	background-color: #dfdfdf;
+	/*z-index: 50;*/
+	/*height: 30px;*/
+}
+
+.touch-drawing .controls.lower {
+	position: absolute;
+	bottom:2%;
+}	
+
+.touch-drawing .controls ul {
+	list-style: none;
+	margin:0 ; 
+	padding :0;
+	height:100%;
+	/*float: left;*/
+}
+.touch-drawing .controls.upper ul li {
+	width: 14%; 
+	float:left;
+	text-align: center;
+}
+
+.touch-drawing .controls.upper a {
+	display: block;
+	text-decoration: none;
+	color: #000;
+	text-transform: uppercase;
+	font-family: 'Cabin', Georgia, Times, serif;
+	font-size: 1em;
+}
+.touch-drawing .controls.upper ul:nth-child(2) li {
+	float: right;
+	width: 18%;
+	padding-right: 1%;
+	text-align: right;
+}
+
+.touch-drawing .controls.upper ul li.selected {
+	background: #FDF416;
+	/*height: 15px;*/
+}
+
+.touch-drawing .controls.lower ul li.selected a{
+	/*border: 2px solid #FFFFFF;*/
+	/*color: #000;*/
+	/*height: 15px;*/
+}
+
+.touch-drawing .controls.lower {
+	border-top : 1px solid #A6A6A6;
+	width: 100%;
+
+}
+.touch-drawing .controls.lower ul{
+	width: 100%;
+}
+.touch-drawing .controls.lower li{
+	float: left;
+	position: relative;
+	width: 8%;
+	padding: 4%;
+	margin-left: 1%;
+}
+.touch-drawing .controls.lower a {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/*
+.touch-drawing canvas .front {
+	z-index: 2;
+}
+.touch-drawing canvas .back {
+	z-index: 1;
+}*/
+/*.touch-drawing div.drawing {
+	position: relative;
+}*/
